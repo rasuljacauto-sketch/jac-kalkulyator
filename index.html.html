@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JACAUTO Kalkulyator | Nematovich</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { 
+            --jac-blue: #00608b; --jac-red: #c8102e; --jac-dark: #1d2124;
+            --light-bg: #f8fafc;
+            --res-orange: #f39c12; --res-brown: #5d4037;
+            --res-red: #e74c3c; --res-green: #27ae60; --res-skyblue: #00bfff;
+            --header-gradient: linear-gradient(135deg, #003e5a 0%, #00608b 70%, #004e72 100%);
+        }
+        
+        body { font-family: 'Segoe UI', sans-serif; background: #e9ecef; margin: 0; padding: 5px; }
+        .container { max-width: 980px; margin: 0 auto; background: white; padding: 15px; border-radius: 12px; overflow: hidden; }
+        
+        /* TOP-BAR */
+        .top-bar { 
+            background: var(--header-gradient);
+            padding: 12px 25px;
+            margin: -15px -15px 20px -15px;
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+            color: white;
+            border-bottom: 3px solid var(--jac-red);
+        }
+        .brand-name { font-weight: 900; font-size: 28px; letter-spacing: 1.5px; }
+        .header-contacts { display: flex; align-items: center; gap: 15px; }
+        .header-text { line-height: 1.2; font-size: 14px; font-weight: 600; text-align: right; }
+        .contact-link { 
+            color: white; 
+            text-decoration: none; 
+            background: rgba(255,255,255,0.15); 
+            padding: 10px; 
+            border-radius: 10px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .model-header {
+            background: radial-gradient(circle at left, #ffffff 0%, #f1f5f9 100%);
+            border-radius: 10px; padding: 10px 20px; margin-bottom: 15px;
+            display: flex; align-items: center; gap: 30px; border: 1px solid #e2e8f0;
+        }
+        .model-header img { width: 45%; max-width: 450px; height: 220px; object-fit: contain; }
+        .model-title-box h3 { color: var(--jac-blue); font-size: 28px; font-weight: 900; margin: 0; }
+
+        /* SPECS */
+        .car-specs { 
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; 
+            background: #fff; padding: 15px; border-radius: 8px; border: 1px solid #edf2f7; margin-bottom: 20px;
+        }
+        .spec-item { display: flex; align-items: center; gap: 8px; font-size: 12px; color: #4a5568; border-bottom: 1px solid #f1f5f9; padding-bottom: 4px; }
+        .spec-item i { color: var(--jac-blue); width: 16px; text-align: center; }
+        .spec-item b { color: var(--jac-dark); font-weight: 700; }
+
+        /* INPUTS */
+        .inputs-section { 
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; 
+            margin-bottom: 20px; background: var(--light-bg); padding: 15px; border-radius: 10px; border: 1px solid #e2e8f0; 
+        }
+        .section-title { font-size: 13px; font-weight: 800; color: var(--jac-blue); grid-column: 1 / -1; border-bottom: 1px solid #cbd5e0; padding-bottom: 5px; text-transform: uppercase; margin-bottom: 5px; }
+        .field { display: flex; flex-direction: column; }
+        .field label { font-size: 10px; font-weight: 800; color: #64748b; margin-bottom: 4px; }
+        select, input { padding: 10px; border: 1px solid #cbd5e0; border-radius: 6px; font-size: 14px; width: 100%; box-sizing: border-box; }
+        .res-input { background-color: #f1f5f9 !important; font-weight: 700; border: 1.5px solid #cbd5e0; }
+
+        /* TABLE */
+        .table-header { text-align: center; margin-top: 20px; margin-bottom: 10px; color: var(--jac-blue); font-weight: 800; font-size: 18px; }
+        .table-container { overflow-x: auto; border-radius: 10px; max-height: 500px; border: 2px solid var(--jac-blue); }
+        table { width: 100%; border-collapse: collapse; }
+        th { background: var(--header-gradient); color: white; font-size: 12px; padding: 12px; position: sticky; top: 0; border: 1px solid rgba(255,255,255,0.1); }
+        td { text-align: center; font-size: 12px; padding: 10px; border: 1px solid #e2e8f0; }
+
+        .action-btns { display: flex; justify-content: flex-end; gap: 15px; margin-top: 20px; padding-bottom: 20px; }
+        .btn-action { border: none; padding: 12px 30px; border-radius: 6px; cursor: pointer; color: white; font-weight: 700; display: flex; align-items: center; gap: 8px; font-size: 14px; }
+        .btn-pdf { background-color: #e74c3c; }
+        .btn-print { background-color: var(--jac-blue); }
+
+        .footer { margin-top: 20px; padding: 15px 0; border-top: 1.5px solid #eee; display: flex; justify-content: space-between; align-items: center; font-size: 12px; }
+        .footer-right { display: flex; align-items: center; gap: 15px; }
+        .social-icons { display: flex; gap: 10px; font-size: 16px; }
+        .social-icons a { color: var(--jac-blue); text-decoration: none; }
+
+        /* PRINT OPTIMIZATSIYA - TUZATILGAN */
+        @media print {
+            @page { size: A4; margin: 5mm; }
+            body { background: white; padding: 0; margin: 0; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+            .container { max-width: 100% !important; padding: 0 !important; margin: 0 !important; border: none !important; }
+            
+            .top-bar { margin: 0 0 10px 0 !important; padding: 8px 20px !important; }
+            .brand-name { font-size: 20px !important; }
+            .header-text { font-size: 10px !important; }
+            .contact-link { padding: 6px !important; }
+            
+            /* Sarlavha rasm ustiga chiqib ketmasligi uchun height auto qilindi */
+            .model-header { 
+                padding: 10px 15px !important; 
+                margin-bottom: 10px !important; 
+                height: auto !important; 
+                display: flex !important; 
+                flex-direction: row !important;
+                align-items: center !important;
+                gap: 20px !important;
+            }
+            .model-header img { height: 90px !important; width: auto !important; }
+            .model-title-box h3 { font-size: 20px !important; margin: 0 !important; }
+            
+            .car-specs { 
+                padding: 6px !important; 
+                gap: 4px !important; 
+                margin-bottom: 10px !important; 
+                display: grid !important; 
+                grid-template-columns: repeat(4, 1fr) !important;
+            }
+            .spec-item { font-size: 9px !important; padding-bottom: 2px !important; }
+            
+            .inputs-section { padding: 8px; gap: 6px; margin-bottom: 5px !important; }
+            .section-title { font-size: 11px !important; }
+            .field label { font-size: 9px !important; }
+            input, select { padding: 4px !important; font-size: 11px !important; }
+
+            .action-btns { display: none !important; }
+            .table-header { margin-top: 5px !important; padding: 5px 0 !important; font-size: 14px !important; }
+            .table-container { max-height: none !important; overflow: visible !important; border: 1px solid var(--jac-blue) !important; }
+            th { padding: 4px !important; font-size: 9px !important; background: var(--jac-blue) !important; color: white !important; }
+            td { padding: 2px 2px !important; font-size: 9px !important; line-height: 1 !important; border: 0.5px solid #ccc !important; }
+            .footer { page-break-inside: avoid; margin-top: 5px !important; font-size: 10px !important; }
+        }
+
+        @media (max-width: 768px) {
+            .top-bar { flex-direction: row; padding: 10px; }
+            .car-specs, .inputs-section { grid-template-columns: repeat(2, 1fr); }
+            .model-header { flex-direction: column; height: auto; }
+            .model-header img { width: 85%; height: auto; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="top-bar">
+            <div class="brand-name">JACAUTO</div>
+            <div class="header-contacts">
+                <div class="header-text">
+                    +998 93 273 21 08<br>
+                    www.jacauto.uz
+                </div>
+                <a href="tel:+998932732108" class="contact-link">
+                    <i class="fa-solid fa-phone-flip"></i>
+                </a>
+            </div>
+        </div>
+
+        <div class="model-header">
+            <img id="carImage" src="" alt="JAC Car">
+            <div class="model-title-box"><h3 id="carName">JAC MODEL</h3></div>
+        </div>
+
+        <div class="car-specs" id="carSpecs"></div>
+
+        <div class="inputs-section">
+            <div class="section-title">KIRITISH MA'LUMOTLARI</div>
+            <div class="field" style="grid-column: span 2;">
+                <label>Modelni tanlang</label>
+                <select id="modelSelect" onchange="updatePrice()">
+                    <option value="199080000">JAC M3 VAN</option>
+                    <option value="215460000">JAC M3 LUXE</option>
+                    <option value="243180000">JAC M4 LUXE</option>
+                    <option value="365400000">JAC SUNRAY VAN</option>
+                    <option value="396900000">JAC SUNRAY LUXE</option>
+                    <option value="225000000">JAC J7 Luxury</option>
+                    <option value="280000000">JAC JS6 Luxury</option>
+                    <option value="299000000">JAC JS8 Pro</option>
+                    <option value="423500000">JAC RF8</option>
+                    <option value="314600000">JAC T8</option>
+                    <option value="399300000">JAC T9</option>
+                    <option value="227360000">JAC X200 (shassi)</option>
+                    <option value="231840000">JAC X200 (bort)</option>
+                    <option value="238560000">JAC X200 (tent)</option>
+                    <option value="258720000">JAC X200 (prom.)</option>
+                </select>
+            </div>
+            <div class="field"><label>Narxi (UZS)</label><input type="text" id="priceDisplay" oninput="formatAndCalculate()"></div>
+            <div class="field"><label>Boshl. (%)</label><input type="number" id="downP" value="30" oninput="calculate()"></div>
+            <div class="field"><label>Stavka (%)</label><input type="number" id="rate" value="25" oninput="calculate()"></div>
+            <div class="field"><label>Muddat (oy)</label><input type="number" id="term" value="60" oninput="calculate()"></div>
+            <div class="field"><label>Sug'urta (%)</label><input type="number" id="insP" value="1" oninput="calculate()"></div>
+            <div class="field">
+                <label>Grafik turi</label>
+                <select id="paymentType" onchange="calculate()">
+                    <option value="annuitet">ANNUITET</option>
+                    <option value="differential">DIFFERENSIAL</option>
+                </select>
+            </div>
+
+            <div class="section-title">NATIJALAR</div>
+            <div class="field"><label>Kredit summasi</label><input type="text" id="loanInp" class="res-input" readonly></div>
+            <div class="field"><label>Boshlang'ich to'lov</label><input type="text" id="downSumInp" class="res-input" readonly style="color:var(--res-orange)"></div>
+            <div class="field"><label>Sug'urta to'lovi</label><input type="text" id="insSumInp" class="res-input" readonly style="color:var(--res-brown)"></div>
+            <div class="field"><label>Jami boshl. xarajat</label><input type="text" id="totalInitInp" class="res-input" readonly style="color:var(--res-red)"></div>
+            <div class="field"><label>Oylik to'lov</label><input type="text" id="monthlyInp" class="res-input" readonly style="color:var(--res-green)"></div>
+            <div class="field"><label>Kunlik to'lov</label><input type="text" id="dailyInp" class="res-input" readonly style="color:var(--res-skyblue)"></div>
+        </div>
+
+        <div class="table-header"><i class="fa-solid fa-calendar-days"></i> TO'LOV JADVALI</div>
+        <div class="table-container">
+            <table>
+                <thead><tr><th>№</th><th>Asosiy qarz</th><th>Foiz to'lovi</th><th>Jami to'lov</th><th>Qoldiq qarz</th></tr></thead>
+                <tbody id="tableBody"></tbody>
+            </table>
+        </div>
+
+        <div class="action-btns">
+            <button class="btn-action btn-pdf" onclick="window.print()"><i class="fa-solid fa-file-pdf"></i> PDF YUKLASH</button>
+            <button class="btn-action btn-print" onclick="window.print()"><i class="fa-solid fa-print"></i> CHOP ETISH</button>
+        </div>
+
+        <div class="footer">
+            <div>© 2026 <b>JACAUTO</b></div>
+            <div class="footer-right">
+                <span>Creator: <b>Nematovich</b></span>
+                <div class="social-icons">
+                    <a href="https://t.me/rasul_2108" target="_blank"><i class="fa-brands fa-telegram"></i></a>
+                    <a href="https://www.instagram.com/rasul_jacauto/" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const carData = {
+            "199080000": { name: "JAC M3 VAN", img: "https://lh3.googleusercontent.com/u/0/d/1jQ2PiyDQbPkNPdnWGKq0RaHiskG_MVQF", turi: "Furgon", yili: "2026", urin: "2", motor: "1.8", trans: "5MT", ot: "134", tezlik: "<155 km/s", sarf: "<8.5 L", bak: "55 L", olcham: "5115x1765x1900", clearance: "16 cm", shina: "195/70R15", drive: "RWD", y_vazn: "1535 kg", u_vazn: "2440 kg", kafolat: "5 yil / 100k km" },
+            "215460000": { name: "JAC M3 LUXE", img: "https://lh3.googleusercontent.com/u/0/d/1tcorTc9GXb6QjEAVZXI5yDuKPF9zmWUE", turi: "Miniven", yili: "2025", urin: "9", motor: "1.8", trans: "5MT", ot: "134", tezlik: "<155 km/s", sarf: "<8.5 L", bak: "55 L", olcham: "5115x1765x1900", clearance: "16 cm", shina: "205/65R15", drive: "RWD", y_vazn: "1560 kg", u_vazn: "2285 kg", kafolat: "5 yil / 100k km" },
+            "243180000": { name: "JAC M4 LUXE", img: "https://lh3.googleusercontent.com/u/0/d/15dyytkijgdvGLnZ9iNwcObH9CgFmewRC", turi: "Miniven", yili: "2026", urin: "9", motor: "2.0", trans: "5MT", ot: "144", tezlik: "<160 km/s", sarf: "<9.5 L", bak: "80 L", olcham: "5200x1890x1970", clearance: "16 cm", shina: "215/65R16", drive: "RWD", y_vazn: "1930 kg", u_vazn: "2800 kg", kafolat: "5 yil / 100k km" },
+            "365400000": { name: "JAC SUNRAY VAN", img: "https://lh3.googleusercontent.com/u/0/d/1MujyvVuC9wrZVyWEURZx50J9fy3K8pwC", turi: "Furgon", yili: "2026", urin: "3", motor: "2.0", trans: "6MT", ot: "191", tezlik: "<120 km/s", sarf: "<8.5 L", bak: "80 L", olcham: "5990x2098x2645", clearance: "16 cm", shina: "195/75R16", drive: "RWD", y_vazn: "2560 kg", u_vazn: "4000 kg", kafolat: "5 yil / 100k km" },
+            "396900000": { name: "JAC SUNRAY LUXE", img: "https://lh3.googleusercontent.com/u/0/d/1z4iiyDloyrw-qWydz8EIbftCTogBrjve", turi: "Mikroavtobus", yili: "2026", urin: "16", motor: "2.0", trans: "6MT", ot: "190", tezlik: "<120 km/s", sarf: "<8.5 L", bak: "80 L", olcham: "5990x2098x2645", clearance: "16 cm", shina: "215/75R16", drive: "RWD", y_vazn: "2830 kg", u_vazn: "4000 kg", kafolat: "5 yil / 100k km" },
+            "225000000": { name: "JAC J7 Luxury", img: "https://lh3.googleusercontent.com/u/0/d/1KXCElvMx0nRr3u682smce-0YH3mlTdlQ", turi: "Sedan", yili: "2024", urin: "5", motor: "1.5T", trans: "CVT", ot: "150", tezlik: "170 km/s", sarf: "<6.5 L", bak: "55 L", olcham: "4772x1820x1492", clearance: "12 cm", shina: "215/50R17", drive: "FWD", y_vazn: "1440 kg", u_vazn: "1865 kg", kafolat: "3 yil / 100k km" },
+            "280000000": { name: "JAC JS6 Luxury", img: "https://lh3.googleusercontent.com/u/0/d/11HkhrgA0RoW2ByI30UpGgPhLyuWH53wf", turi: "Krossover", yili: "2024", urin: "5", motor: "1.5T", trans: "6DCT", ot: "180", tezlik: "180 km/s", sarf: "<6.9 L", bak: "55 L", olcham: "4605x1890x1700", clearance: "25 cm", shina: "235/55R18", drive: "FWD", y_vazn: "1560 kg", u_vazn: "1935 kg", kafolat: "3 yil / 100k km" },
+            "299000000": { name: "JAC JS8 Pro", img: "https://lh3.googleusercontent.com/u/0/d/1q3Z5_r-1bahFOVtsuYz6Y8U8lrvCkFyB", turi: "Krossover", yili: "2026", urin: "7", motor: "2.0T", trans: "7DCT", ot: "180", tezlik: "170 km/s", sarf: "<7.5 L", bak: "58 L", olcham: "4825x1870x1758", clearance: "16 cm", shina: "265/50R19", drive: "FWD", y_vazn: "1720 kg", u_vazn: "2280 kg", kafolat: "5 yil / 100k km" },
+            "423500000": { name: "JAC RF8", img: "https://lh3.googleusercontent.com/u/0/d/1CCY8i1AkEskRpft3bo0hjnC7fG5pnnNC", turi: "Miniven", yili: "2026", urin: "7", motor: "2.0T", trans: "8GDI", ot: "253", tezlik: "210 km/s", sarf: "<8.9 L", bak: "65 L", olcham: "5215x1980x1830", clearance: "16 cm", shina: "225/60R18", drive: "FWD", y_vazn: "2100 kg", u_vazn: "2755 kg", kafolat: "5 yil / 100k km" },
+            "314600000": { name: "JAC T8", img: "https://lh3.googleusercontent.com/u/0/d/1HUiquLb4Gg0y4NbmdZu4msPdLOrzI-ZL", turi: "Pikap", yili: "2026", urin: "5", motor: "2.0T", trans: "6MT", ot: "191", tezlik: "120 km/s", sarf: "<8.5 L", bak: "80 L", olcham: "5325x1880x1830", clearance: "22 cm", shina: "265/60R18", drive: "4WD", y_vazn: "1930 kg", u_vazn: "2855 kg", kafolat: "5 yil / 100k km" },
+            "399300000": { name: "JAC T9", img: "https://lh3.googleusercontent.com/u/0/d/1KRd0ttwyvL8DCOzAhFNET-9-UjFfotrP", turi: "Pikap", yili: "2026", urin: "5", motor: "2.0T", trans: "8AT", ot: "231", tezlik: "150 km/s", sarf: "<10 L", bak: "76 L", olcham: "5330x1965x1920", clearance: "21 cm", shina: "265/60R18", drive: "4WD", y_vazn: "2030 kg", u_vazn: "3100 kg", kafolat: "5 yil / 100k km" },
+            "227360000": { name: "JAC X200 (shassi)", img: "https://lh3.googleusercontent.com/u/0/d/1_4FS2EbTnxEj2-uQaU3tgNT7D38tV91a", turi: "Shassi", yili: "2025", urin: "2", motor: "2.0", trans: "5MT", ot: "147", tezlik: "110 km/s", sarf: "<8.2 L", bak: "65 L", olcham: "5190×1750×1945", clearance: "18 cm", shina: "195/70R15C", drive: "RWD", y_vazn: "1630 kg", u_vazn: "3490 kg", kafolat: "3 yil / 100k km" },
+            "231840000": { name: "JAC X200 (bort)", img: "https://lh3.googleusercontent.com/u/0/d/1F_UaGTQCj2pbLJBpM-rZEynO0-fZ0xHb", turi: "Mini-yuktashuvchi", yili: "2025", urin: "2", motor: "2.0", trans: "5MT", ot: "147", tezlik: "110 km/s", sarf: "<8.2 L", bak: "65 L", olcham: "5190×1750×1945", clearance: "18 cm", shina: "195/70R15C", drive: "RWD", y_vazn: "1780 kg", u_vazn: "3490 kg", kafolat: "3 yil / 100k km" },
+            "238560000": { name: "JAC X200 (tent)", img: "https://lh3.googleusercontent.com/u/0/d/1F_UaGTQCj2pbLJBpM-rZEynO0-fZ0xHb", turi: "Mini-yuktashuvchi", yili: "2025", urin: "2", motor: "2.0", trans: "5MT", ot: "147", tezlik: "110 km/s", sarf: "<8.2 L", bak: "65 L", olcham: "5190×1750×2640", clearance: "18 cm", shina: "195/70R15C", drive: "RWD", y_vazn: "1850 kg", u_vazn: "3490 kg", kafolat: "3 yil / 100k km" },
+            "258720000": { name: "JAC X200 (prom.)", img: "https://lh3.googleusercontent.com/u/0/d/1F_UaGTQCj2pbLJBpM-rZEynO0-fZ0xHb", turi: "Mini-yuktashuvchi", yili: "2025", urin: "2", motor: "2.0", trans: "5MT", ot: "147", tezlik: "110 km/s", sarf: "<8.2 L", bak: "65 L", olcham: "5190×1760×2610", clearance: "18 cm", shina: "195/70R15C", drive: "RWD", y_vazn: "1920 kg", u_vazn: "3490 kg", kafolat: "3 yil / 100k km" }
+        };
+
+        function formatNumber(n) { return n.toLocaleString('en-US'); }
+
+        function updatePrice() {
+            const id = document.getElementById('modelSelect').value;
+            const car = carData[id];
+            document.getElementById('carImage').src = car.img;
+            document.getElementById('priceDisplay').value = formatNumber(parseInt(id));
+            document.getElementById('carName').innerText = car.name;
+            
+            document.getElementById('carSpecs').innerHTML = `
+                <div class="spec-item"><i class="fa-solid fa-car"></i> <span>Turi: <b>${car.turi}</b></span></div>
+                <div class="spec-item"><i class="fa-solid fa-calendar"></i> <span>Yili: <b>${car.yili}</b></span></div>
+                <div class="spec-item"><i class="fa-solid fa-users"></i> <span>O'rinlar soni: <b>${car.urin}</b></span></div>
+                <div class="spec-item"><i class="fa-solid fa-shield-halved"></i> <span>Kafolat: <b>${car.kafolat}</b></span></div>
+                <div class="spec-item"><i class="fa-solid fa-weight-hanging"></i> <span>Yuksiz vazn: <b>${car.y_vazn}</b></span></div>
+                <div class="spec-item"><i class="fa-solid fa-weight-scale"></i> <span>Umumiy vazn: <b>${car.u_vazn}</b></span></div>
+                <div class="spec-item"><i class="fa-solid fa-microchip"></i> <span>Motor: <b>${car.motor}</b></span></div>
+                <div class="spec-item"><i class="fa-solid fa-gears"></i> <span>Transmissiya: <b>${car.trans}</b></span></div>
+                <div class="spec-item"><i class="fa-solid fa-bolt"></i> <span>Ot kuchi: <b>${car.ot}</b></span></div>
+                <div class="spec-item"><i class="fa-solid fa-gauge-high"></i> <span>Maks tezlik: <b>${car.tezlik}</b></span></div>
+                <div class="spec-item"><i class="fa-solid fa-gas-pump"></i> <span>Yoqilg'i sarfi: <b>${car.sarf}</b></span></div>
+                <div class="spec-item"><i class="fa-solid fa-oil-can"></i> <span>Bak sig'imi: <b>${car.bak}</b></span></div>
+                <div class="spec-item"><i class="fa-solid fa-ruler-combined"></i> <span>O'lchamlari: <b>${car.olcham}</b></span></div>
+                <div class="spec-item"><i class="fa-solid fa-arrows-up-down"></i> <span>Klirens: <b>${car.clearance}</b></span></div>
+                <div class="spec-item"><i class="fa-solid fa-dharmachakra"></i> <span>Shina o'lchami: <b>${car.shina}</b></span></div>
+                <div class="spec-item"><i class="fa-solid fa-truck-monster"></i> <span>Privod: <b>${car.drive}</b></span></div>
+            `;
+            calculate();
+        }
+
+        function calculate() {
+            let priceStr = document.getElementById('priceDisplay').value.replace(/,/g, "");
+            const price = parseFloat(priceStr) || 0;
+            const downPercent = parseFloat(document.getElementById('downP').value) || 0;
+            const annualRate = parseFloat(document.getElementById('rate').value) || 0;
+            const months = parseInt(document.getElementById('term').value) || 1;
+            const insPercent = parseFloat(document.getElementById('insP').value) || 0;
+            const paymentType = document.getElementById('paymentType').value;
+
+            const downSum = price * (downPercent / 100);
+            const loanAmount = price - downSum;
+            const insSum = price * (insPercent / 100) * (months / 12);
+            const mRate = (annualRate / 100) / 12;
+
+            let bal = loanAmount; let rows = "";
+            if (paymentType === 'annuitet') {
+                let monthly = mRate > 0 ? loanAmount * (mRate * Math.pow(1 + mRate, months)) / (Math.pow(1 + mRate, months) - 1) : loanAmount / months;
+                document.getElementById('monthlyInp').value = formatNumber(Math.round(monthly));
+                document.getElementById('dailyInp').value = formatNumber(Math.round(monthly/30));
+                for (let i = 1; i <= months; i++) {
+                    let int = bal * mRate; let prin = monthly - int; bal -= prin;
+                    rows += `<tr><td>${i}</td><td>${formatNumber(Math.round(prin))}</td><td>${formatNumber(Math.round(int))}</td><td>${formatNumber(Math.round(monthly))}</td><td>${formatNumber(Math.round(Math.max(0, bal)))}</td></tr>`;
+                }
+            } else {
+                const principal = loanAmount / months;
+                let firstM = 0;
+                for (let i = 1; i <= months; i++) {
+                    let int = bal * mRate; let currentM = principal + int;
+                    if (i === 1) firstM = currentM;
+                    bal -= principal;
+                    rows += `<tr><td>${i}</td><td>${formatNumber(Math.round(principal))}</td><td>${formatNumber(Math.round(int))}</td><td>${formatNumber(Math.round(currentM))}</td><td>${formatNumber(Math.round(Math.max(0, bal)))}</td></tr>`;
+                }
+                document.getElementById('monthlyInp').value = formatNumber(Math.round(firstM));
+                document.getElementById('dailyInp').value = formatNumber(Math.round(firstM/30));
+            }
+            document.getElementById('loanInp').value = formatNumber(Math.round(loanAmount));
+            document.getElementById('downSumInp').value = formatNumber(Math.round(downSum));
+            document.getElementById('insSumInp').value = formatNumber(Math.round(insSum));
+            document.getElementById('totalInitInp').value = formatNumber(Math.round(downSum + insSum));
+            document.getElementById('tableBody').innerHTML = rows;
+        }
+
+        function formatAndCalculate() {
+            let input = document.getElementById('priceDisplay');
+            let value = input.value.replace(/\D/g, "");
+            if (value !== "") { input.value = formatNumber(parseInt(value)); }
+            calculate();
+        }
+        updatePrice();
+    </script>
+</body>
+</html>
