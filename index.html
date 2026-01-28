@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JACAUTO Kalkulyator | Nematovich</title>
+    <title>JAC Kalkulyator </title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root { 
@@ -237,7 +237,7 @@
         const translations = {
             uz: {
                 inputTitle: "KIRITISH MA'LUMOTLARI", modelLabel: "Modelni tanlang", priceLabel: "Narxi (UZS)", 
-                downpLabel: "Boshl. (%)", rateLabel: "Stavka (%)", termLabel: "Muddat (oy)", inspLabel: "Sug'urta (%)",
+                downpLabel: "Boshlang'ich to'lov (%)", rateLabel: "Yillik foiz (%)", termLabel: "Muddat (oy)", inspLabel: "Sug'urta (%)",
                 typeLabel: "Grafik turi", resultTitle: "NATIJALAR", loanLabel: "Kredit summasi", downsumLabel: "Boshlang'ich to'lov",
                 inssumLabel: "Sug'urta to'lovi", totalinitLabel: "Jami boshl. xarajat", monthlyLabel: "Oylik to'lov", 
                 dailyLabel: "Kunlik to'lov", tableHeader: "TO'LOV JADVALI", tableHead: ["№", "Asosiy qarz", "Foiz to'lovi", "Jami to'lov", "Qoldiq qarz"],
@@ -269,7 +269,7 @@
 
         const carData = {
             "199080000": { name: "JAC M3 VAN", img: "https://lh3.googleusercontent.com/u/0/d/1jQ2PiyDQbPkNPdnWGKq0RaHiskG_MVQF", turi: "furgon", yili: "2026", urin: "2", motor: "1.8", trans: "5MT", ot: "134", tezlik: "<155 km/s", sarf: "<8.5 L", bak: "55 L", olcham: "5115x1765x1900", clearance: "16 cm", shina: "195/70R15", drive: "RWD", tormoz: "disk_b", u_vazn: "2600 kg", y_vazn: "1600 kg" },
-            "215460000": { name: "JAC M3 LUXE", img: "https://lh3.googleusercontent.com/u/0/d/1tcorTc9GXb6QjEAVZXI5yDuKPF9zmWUE", turi: "miniven", yili: "2025", urin: "9", motor: "1.8", trans: "5MT", ot: "134", tezlik: "<155 km/s", sarf: "<8.5 L", bak: "55 L", olcham: "5115x1765x1900", clearance: "16 cm", shina: "205/65R15", drive: "RWD", tormoz: "disk_b", u_vazn: "2378 kg", y_vazn: "1640 kg" },
+            "215460000": { name: "JAC M3 LUXE", img: "https://lh3.googleusercontent.com/u/0/d/1tcorTc9GXb6QjEAVZXI5yDuKPF9zmWUE", turi: "miniven", yili: "2026", urin: "9", motor: "1.8", trans: "5MT", ot: "134", tezlik: "<155 km/s", sarf: "<8.5 L", bak: "55 L", olcham: "5115x1765x1900", clearance: "16 cm", shina: "205/65R15", drive: "RWD", tormoz: "disk_b", u_vazn: "2378 kg", y_vazn: "1640 kg" },
             "243180000": { name: "JAC M4 LUXE", img: "https://lh3.googleusercontent.com/u/0/d/15dyytkijgdvGLnZ9iNwcObH9CgFmewRC", turi: "miniven", yili: "2026", urin: "9", motor: "2.0", trans: "5MT", ot: "144", tezlik: "<160 km/s", sarf: "<9.5 L", bak: "80 L", olcham: "5200x1890x1970", clearance: "16 cm", shina: "215/65R16", drive: "RWD", tormoz: "disk", u_vazn: "2815 kg", y_vazn: "1930 kg" },
             "365400000": { name: "JAC SUNRAY VAN", img: "https://lh3.googleusercontent.com/u/0/d/1MujyvVuC9wrZVyWEURZx50J9fy3K8pwC", turi: "furgon", yili: "2026", urin: "3", motor: "2.0", trans: "6MT", ot: "191", tezlik: "<120 km/s", sarf: "<8.5 L", bak: "80 L", olcham: "5990x2098x2645", clearance: "16 cm", shina: "195/75R16", drive: "RWD", tormoz: "disk_b", u_vazn: "3490 kg", y_vazn: "2655 kg" },
             "396900000": { name: "JAC SUNRAY LUXE", img: "https://lh3.googleusercontent.com/u/0/d/1z4iiyDloyrw-qWydz8EIbftCTogBrjve", turi: "mikro", yili: "2026", urin: "16", motor: "2.0", trans: "6MT", ot: "190", tezlik: "<120 km/s", sarf: "<8.5 L", bak: "80 L", olcham: "5990x2098x2645", clearance: "16 cm", shina: "215/75R16", drive: "RWD", tormoz: "disk", u_vazn: "4000 kg", y_vazn: "2800 kg" },
