@@ -17,27 +17,43 @@
         body { font-family: 'Segoe UI', sans-serif; background: #e9ecef; margin: 0; padding: 5px; }
         .container { max-width: 980px; margin: 0 auto; background: white; padding: 15px; border-radius: 12px; overflow: hidden; }
         
+        /* TOP BAR OPTIMIZATSIYA */
         .top-bar { 
             background: var(--header-gradient);
-            padding: 12px 25px;
-            margin: -15px -15px 5px -15px; /* Pastki margin kamaytirildi */
+            padding: 12px 20px;
+            margin: -15px -15px 5px -15px;
             display: flex; 
             justify-content: space-between; 
             align-items: center;
             color: white;
             border-bottom: 3px solid var(--jac-red);
+            gap: 10px;
         }
-        .brand-name { font-weight: 900; font-size: 28px; letter-spacing: 1.5px; }
-        
-        .header-contacts { display: flex; align-items: center; gap: 15px; }
-        .header-text { line-height: 1.2; font-size: 14px; font-weight: 600; text-align: right; }
+        .brand-name { 
+            font-weight: 900; 
+            font-size: clamp(20px, 5vw, 28px); 
+            letter-spacing: 1.5px; 
+            flex-shrink: 0;
+        }
+        .header-contacts { 
+            display: flex; 
+            align-items: center; 
+            gap: clamp(8px, 2vw, 15px);
+            text-align: right;
+        }
+        .header-text { 
+            line-height: 1.3; 
+            font-size: clamp(11px, 3vw, 14px); 
+            font-weight: 600; 
+            white-space: nowrap;
+        }
         .contact-link { 
             color: white; text-decoration: none; background: rgba(255,255,255,0.15); 
-            padding: 10px; border-radius: 10px; display: flex; align-items: center; 
+            width: 35px; height: 35px; border-radius: 10px; display: flex; align-items: center; 
             justify-content: center; border: 1px solid rgba(255,255,255,0.2);
+            flex-shrink: 0;
         }
 
-        /* Tillar paneli - Top-bar tashqarisida, o'ng tomonda */
         .lang-wrapper {
             display: flex;
             justify-content: flex-end;
@@ -85,7 +101,7 @@
         td { text-align: center; font-size: 12px; padding: 10px; border: 1px solid #e2e8f0; }
 
         .action-btns { display: flex; justify-content: flex-end; gap: 15px; margin-top: 20px; padding-bottom: 20px; }
-        .btn-action { border: none; padding: 12px 30px; border-radius: 6px; cursor: pointer; color: white; font-weight: 700; display: flex; align-items: center; gap: 8px; font-size: 14px; }
+        .btn-action { border: none; padding: 12px 30px; border-radius: 6px; cursor: pointer; color: white; font-weight: 700; display: flex; align-items: center; gap: 8px; font-size: 14px; -webkit-appearance: none; }
         .btn-print { background-color: var(--jac-blue); }
 
         .footer { margin-top: 20px; padding: 15px 0; border-top: 1.5px solid #eee; display: flex; justify-content: space-between; align-items: center; font-size: 12px; }
@@ -98,8 +114,7 @@
             @page { size: A4; margin: 5mm; }
             body { background: white; padding: 0; margin: 0; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
             .container { max-width: 100% !important; padding: 0 !important; margin: 0 !important; border: none !important; }
-            .top-bar { margin: 0 0 10px 0 !important; padding: 8px 20px !important; }
-            .brand-name { font-size: 20px !important; }
+            .top-bar { margin: 0 0 10px 0 !important; padding: 10px 20px !important; }
         }
 
         @media (max-width: 768px) {
@@ -192,7 +207,7 @@
         </div>
 
         <div class="action-btns">
-            <button class="btn-action btn-print" onclick="window.print()" id="t-btn-print"><i class="fa-solid fa-print"></i> CHOP ETISH</button>
+            <button class="btn-action btn-print" onclick="handlePrint()" id="t-btn-print"><i class="fa-solid fa-print"></i> CHOP ETISH</button>
         </div>
 
         <div class="footer">
@@ -218,7 +233,8 @@
                 inssumLabel: "Sug'urta to'lovi", totalinitLabel: "Jami boshl. xarajat", monthlyLabel: "Oylik to'lov", 
                 dailyLabel: "Kunlik to'lov", tableHeader: "TO'LOV JADVALI", tableHead: ["№", "Asosiy qarz", "Foiz to'lovi", "Jami to'lov", "Qoldiq qarz"],
                 btnPrint: "CHOP ETISH", creator: "Creator: <b>Nematovich</b>",
-                specs: { turi: "Turi", yili: "Yili", urin: "O'rin soni", u_vazn: "Umumiy vazn", y_vazn: "Yuksiz vazn", motor: "Motor", trans: "Transmissiya", ot: "Ot kuchi", tezlik: "Maks. tezlik", sarf: "Yoqilg'i sarfi", bak: "Bak sig'imi", olcham: "O'lchamlari", clearance: "Klirens", shina: "Shina o'lchami", drive: "G'ildirak (Drive)", tormoz: "Tormoz turi" }
+                specs: { turi: "Turi", yili: "Yili", urin: "O'rin soni", u_vazn: "Umumiy vazn", y_vazn: "Yuksiz vazn", motor: "Motor", trans: "Transmissiya", ot: "Ot kuchi", tezlik: "Maks. tezlik", sarf: "Yoqilg'i sarfi", bak: "Bak sig'imi", olcham: "O'lchamlari", clearance: "Klirens", shina: "Shina o'lchami", drive: "G'ildirak (Drive)", tormoz: "Tormoz turi" },
+                vals: { furgon: "Furgon", miniven: "Miniven", mikro: "Mikroavtobus", sedan: "Sedan", krossover: "Krossover", pikap: "Pikap", mini_y: "Mini-yuktashuvchi", disk_b: "Disk/Baraban", disk: "Disk", bort: "Bort", tent: "Tent", prom: "Prom." }
             },
             ru: {
                 inputTitle: "ВХОДНЫЕ ДАННЫЕ", modelLabel: "Выберите модель", priceLabel: "Цена (UZS)", 
@@ -227,7 +243,8 @@
                 inssumLabel: "Сумма страховки", totalinitLabel: "Итого первон. расход", monthlyLabel: "Ежемесячный платеж", 
                 dailyLabel: "Платеж в день", tableHeader: "ГРАФИК ПЛАТЕЖЕЙ", tableHead: ["№", "Осн. долг", "Проценты", "Всего", "Остаток"],
                 btnPrint: "ПЕЧАТЬ", creator: "Создатель: <b>Nematovich</b>",
-                specs: { turi: "Тип", yili: "Год", urin: "Мест", u_vazn: "Общий вес", y_vazn: "Вес без нагрузки", motor: "Мотор", trans: "Трансмиссия", ot: "Лошадиные силы", tezlik: "Макс. скорость", sarf: "Расход топлива", bak: "Объем бака", olcham: "Габариты", clearance: "Клиренс", shina: "Размер шин", drive: "Привод", tormoz: "Тип тормозов" }
+                specs: { turi: "Тип", yili: "Год", urin: "Мест", u_vazn: "Общий вес", y_vazn: "Вес без нагрузки", motor: "Мотор", trans: "Трансмиссия", ot: "Лошадиные силы", tezlik: "Макс. скорость", sarf: "Расход топлива", bak: "Объем бака", olcham: "Габариты", clearance: "Клиренс", shina: "Размер шин", drive: "Привод", tormoz: "Тип тормозов" },
+                vals: { furgon: "Фургон", miniven: "Минивэн", mikro: "Микроавтобус", sedan: "Седан", krossover: "Кроссовер", pikap: "Пикап", mini_y: "Мини-грузовик", disk_b: "Диск/Барабан", disk: "Диск", bort: "Борт", tent: "Тент", prom: "Пром." }
             },
             en: {
                 inputTitle: "INPUT DATA", modelLabel: "Select Model", priceLabel: "Price (UZS)", 
@@ -236,25 +253,26 @@
                 inssumLabel: "Insurance Amount", totalinitLabel: "Total Initial Cost", monthlyLabel: "Monthly Payment", 
                 dailyLabel: "Daily Payment", tableHeader: "PAYMENT SCHEDULE", tableHead: ["№", "Principal", "Interest", "Total", "Balance"],
                 btnPrint: "PRINT", creator: "Creator: <b>Nematovich</b>",
-                specs: { turi: "Type", yili: "Year", urin: "Seats", u_vazn: "Gross Weight", y_vazn: "Curb Weight", motor: "Engine", trans: "Transmission", ot: "Horsepower", tezlik: "Max Speed", sarf: "Fuel Consumption", bak: "Fuel Tank", olcham: "Dimensions", clearance: "Clearance", shina: "Tire Size", drive: "Drive", tormoz: "Brake Type" }
+                specs: { turi: "Type", yili: "Year", urin: "Seats", u_vazn: "Gross Weight", y_vazn: "Curb Weight", motor: "Engine", trans: "Transmission", ot: "Horsepower", tezlik: "Max Speed", sarf: "Fuel Consumption", bak: "Fuel Tank", olcham: "Dimensions", clearance: "Clearance", shina: "Tire Size", drive: "Drive", tormoz: "Brake Type" },
+                vals: { furgon: "Van", miniven: "Minivan", mikro: "Minibus", sedan: "Sedan", krossover: "Crossover", pikap: "Pickup", mini_y: "Mini Truck", disk_b: "Disc/Drum", disk: "Disc", bort: "Board", tent: "Tent", prom: "Prom." }
             }
         };
 
         const carData = {
-            "199080000": { name: "JAC M3 VAN", img: "https://lh3.googleusercontent.com/u/0/d/1jQ2PiyDQbPkNPdnWGKq0RaHiskG_MVQF", turi: "Furgon", yili: "2026", urin: "2", motor: "1.8", trans: "5MT", ot: "134", tezlik: "<155 km/s", sarf: "<8.5 L", bak: "55 L", olcham: "5115x1765x1900", clearance: "16 cm", shina: "195/70R15", drive: "RWD", tormoz: "Disk/Baraban", u_vazn: "2600 kg", y_vazn: "1600 kg" },
-            "215460000": { name: "JAC M3 LUXE", img: "https://lh3.googleusercontent.com/u/0/d/1tcorTc9GXb6QjEAVZXI5yDuKPF9zmWUE", turi: "Miniven", yili: "2025", urin: "9", motor: "1.8", trans: "5MT", ot: "134", tezlik: "<155 km/s", sarf: "<8.5 L", bak: "55 L", olcham: "5115x1765x1900", clearance: "16 cm", shina: "205/65R15", drive: "RWD", tormoz: "Disk/Baraban", u_vazn: "2378 kg", y_vazn: "1640 kg" },
-            "243180000": { name: "JAC M4 LUXE", img: "https://lh3.googleusercontent.com/u/0/d/15dyytkijgdvGLnZ9iNwcObH9CgFmewRC", turi: "Miniven", yili: "2026", urin: "9", motor: "2.0", trans: "5MT", ot: "144", tezlik: "<160 km/s", sarf: "<9.5 L", bak: "80 L", olcham: "5200x1890x1970", clearance: "16 cm", shina: "215/65R16", drive: "RWD", tormoz: "Disk", u_vazn: "2815 kg", y_vazn: "1930 kg" },
-            "365400000": { name: "JAC SUNRAY VAN", img: "https://lh3.googleusercontent.com/u/0/d/1MujyvVuC9wrZVyWEURZx50J9fy3K8pwC", turi: "Furgon", yili: "2026", urin: "3", motor: "2.0", trans: "6MT", ot: "191", tezlik: "<120 km/s", sarf: "<8.5 L", bak: "80 L", olcham: "5990x2098x2645", clearance: "16 cm", shina: "195/75R16", drive: "RWD", tormoz: "Disk/Baraban", u_vazn: "3490 kg", y_vazn: "2655 kg" },
-            "396900000": { name: "JAC SUNRAY LUXE", img: "https://lh3.googleusercontent.com/u/0/d/1z4iiyDloyrw-qWydz8EIbftCTogBrjve", turi: "Mikroavtobus", yili: "2026", urin: "16", motor: "2.0", trans: "6MT", ot: "190", tezlik: "<120 km/s", sarf: "<8.5 L", bak: "80 L", olcham: "5990x2098x2645", clearance: "16 cm", shina: "215/75R16", drive: "RWD", tormoz: "Disk", u_vazn: "4000 kg", y_vazn: "2800 kg" },
-            "225000000": { name: "JAC J7 Luxury", img: "https://lh3.googleusercontent.com/u/0/d/1KXCElvMx0nRr3u682smce-0YH3mlTdlQ", turi: "Sedan", yili: "2024", urin: "5", motor: "1.5T", trans: "6CVT", ot: "150", tezlik: "170 km/s", sarf: "<6.5 L", bak: "55 L", olcham: "4772x1820x1492", clearance: "12 cm", shina: "215/50R17", drive: "FWD", tormoz: "Disk", u_vazn: "1865 kg", y_vazn: "1440 kg" },
-            "280000000": { name: "JAC JS6 Luxury", img: "https://lh3.googleusercontent.com/u/0/d/11HkhrgA0RoW2ByI30UpGgPhLyuWH53wf", turi: "Krossover", yili: "2024", urin: "5", motor: "1.5T", trans: "6DCT", ot: "180", tezlik: "180 km/s", sarf: "<6.9 L", bak: "55 L", olcham: "4605x1890x1700", clearance: "25 cm", shina: "235/55R18", drive: "FWD", tormoz: "Disk", u_vazn: "2015 kg", y_vazn: "1590 kg" },
-            "299000000": { name: "JAC JS8 Pro", img: "https://lh3.googleusercontent.com/u/0/d/1q3Z5_r-1bahFOVtsuYz6Y8U8lrvCkFyB", turi: "Krossover", yili: "2026", urin: "7", motor: "1.5T", trans: "7DCT", ot: "180", tezlik: "170 km/s", sarf: "<7.5 L", bak: "58 L", olcham: "4825x1870x1758", clearance: "16 cm", shina: "265/50R19", drive: "FWD", tormoz: "Disk", u_vazn: "2225 kg", y_vazn: "1675 kg" },
-            "423500000": { name: "JAC RF8", img: "https://lh3.googleusercontent.com/u/0/d/1CCY8i1AkEskRpft3bo0hjnC7fG5pnnNC", turi: "Miniven", yili: "2026", urin: "7", motor: "2.0T", trans: "8GDI", ot: "253", tezlik: "210 km/s", sarf: "<8.9 L", bak: "65 L", olcham: "5215x1895x1830", clearance: "16 cm", shina: "225/55R18", drive: "FWD", tormoz: "Disk", u_vazn: "2110 kg", y_vazn: "2675 kg" },
-            "314600000": { name: "JAC T8", img: "https://lh3.googleusercontent.com/u/0/d/1HUiquLb4Gg0y4NbmdZu4msPdLOrzI-ZL", turi: "Pikap", yili: "2026", urin: "5", motor: "2.0T", trans: "6MT", ot: "191", tezlik: "120 km/s", sarf: "<8.5 L", bak: "80 L", olcham: "5990x2098x2645", clearance: "16 cm", shina: "195/75R16", drive: "4WD", tormoz: "Disk/Baraban", u_vazn: "4000 kg", y_vazn: "2800 kg" },
-            "399300000": { name: "JAC T9", img: "https://lh3.googleusercontent.com/u/0/d/1KRd0ttwyvL8DCOzAhFNET-9-UjFfotrP", turi: "Pikap", yili: "2026", urin: "5", motor: "2.0T", trans: "8AT", ot: "231", tezlik: "150 km/s", sarf: "<10 L", bak: "76 L", olcham: "5330x1965x1920", clearance: "21 cm", shina: "265/60R18", drive: "4WD", tormoz: "Disk", u_vazn: "3055 kg", y_vazn: "2055 kg" },
-            "231840000": { name: "JAC X200 (bort)", img: "https://lh3.googleusercontent.com/u/0/d/1F_UaGTQCj2pbLJBpM-rZEynO0-fZ0xHb", turi: "Mini-yuktashuvchi", yili: "2025", urin: "2", motor: "2.0", trans: "5MT", ot: "147", tezlik: "110 km/s", sarf: "<8.2 L", bak: "65 L", olcham: "5190×1750×1945", clearance: "18 cm", shina: "195/70R15C", drive: "RWD", tormoz: "Disk/Baraban", u_vazn: "3490 kg", y_vazn: "1645 kg" },
-            "238560000": { name: "JAC X200 (tent)", img: "https://lh3.googleusercontent.com/u/0/d/1F_UaGTQCj2pbLJBpM-rZEynO0-fZ0xHb", turi: "Mini-yuktashuvchi", yili: "2025", urin: "2", motor: "2.0", trans: "5MT", ot: "147", tezlik: "110 km/s", sarf: "<8.2 L", bak: "65 L", olcham: "5190×1750×2640", clearance: "18 cm", shina: "195/70R15C", drive: "RWD", tormoz: "Disk/Baraban", u_vazn: "3500 kg", y_vazn: "1775 kg" },
-            "258720000": { name: "JAC X200 (prom.)", img: "https://lh3.googleusercontent.com/u/0/d/1F_UaGTQCj2pbLJBpM-rZEynO0-fZ0xHb", turi: "Mini-yuktashuvchi", yili: "2025", urin: "2", motor: "2.0", trans: "5MT", ot: "147", tezlik: "110 km/s", sarf: "<8.2 L", bak: "65 L", olcham: "5190×1760×2610", clearance: "18 cm", shina: "195/70R15C", drive: "RWD", tormoz: "Disk/Baraban", u_vazn: "3500 kg", y_vazn: "1780 kg" }
+            "199080000": { name: "JAC M3 VAN", img: "https://lh3.googleusercontent.com/u/0/d/1jQ2PiyDQbPkNPdnWGKq0RaHiskG_MVQF", turi: "furgon", yili: "2026", urin: "2", motor: "1.8", trans: "5MT", ot: "134", tezlik: "<155 km/s", sarf: "<8.5 L", bak: "55 L", olcham: "5115x1765x1900", clearance: "16 cm", shina: "195/70R15", drive: "RWD", tormoz: "disk_b", u_vazn: "2600 kg", y_vazn: "1600 kg" },
+            "215460000": { name: "JAC M3 LUXE", img: "https://lh3.googleusercontent.com/u/0/d/1tcorTc9GXb6QjEAVZXI5yDuKPF9zmWUE", turi: "miniven", yili: "2025", urin: "9", motor: "1.8", trans: "5MT", ot: "134", tezlik: "<155 km/s", sarf: "<8.5 L", bak: "55 L", olcham: "5115x1765x1900", clearance: "16 cm", shina: "205/65R15", drive: "RWD", tormoz: "disk_b", u_vazn: "2378 kg", y_vazn: "1640 kg" },
+            "243180000": { name: "JAC M4 LUXE", img: "https://lh3.googleusercontent.com/u/0/d/15dyytkijgdvGLnZ9iNwcObH9CgFmewRC", turi: "miniven", yili: "2026", urin: "9", motor: "2.0", trans: "5MT", ot: "144", tezlik: "<160 km/s", sarf: "<9.5 L", bak: "80 L", olcham: "5200x1890x1970", clearance: "16 cm", shina: "215/65R16", drive: "RWD", tormoz: "disk", u_vazn: "2815 kg", y_vazn: "1930 kg" },
+            "365400000": { name: "JAC SUNRAY VAN", img: "https://lh3.googleusercontent.com/u/0/d/1MujyvVuC9wrZVyWEURZx50J9fy3K8pwC", turi: "furgon", yili: "2026", urin: "3", motor: "2.0", trans: "6MT", ot: "191", tezlik: "<120 km/s", sarf: "<8.5 L", bak: "80 L", olcham: "5990x2098x2645", clearance: "16 cm", shina: "195/75R16", drive: "RWD", tormoz: "disk_b", u_vazn: "3490 kg", y_vazn: "2655 kg" },
+            "396900000": { name: "JAC SUNRAY LUXE", img: "https://lh3.googleusercontent.com/u/0/d/1z4iiyDloyrw-qWydz8EIbftCTogBrjve", turi: "mikro", yili: "2026", urin: "16", motor: "2.0", trans: "6MT", ot: "190", tezlik: "<120 km/s", sarf: "<8.5 L", bak: "80 L", olcham: "5990x2098x2645", clearance: "16 cm", shina: "215/75R16", drive: "RWD", tormoz: "disk", u_vazn: "4000 kg", y_vazn: "2800 kg" },
+            "225000000": { name: "JAC J7 Luxury", img: "https://lh3.googleusercontent.com/u/0/d/1KXCElvMx0nRr3u682smce-0YH3mlTdlQ", turi: "sedan", yili: "2024", urin: "5", motor: "1.5T", trans: "6CVT", ot: "150", tezlik: "170 km/s", sarf: "<6.5 L", bak: "55 L", olcham: "4772x1820x1492", clearance: "12 cm", shina: "215/50R17", drive: "FWD", tormoz: "disk", u_vazn: "1865 kg", y_vazn: "1440 kg" },
+            "280000000": { name: "JAC JS6 Luxury", img: "https://lh3.googleusercontent.com/u/0/d/11HkhrgA0RoW2ByI30UpGgPhLyuWH53wf", turi: "krossover", yili: "2024", urin: "5", motor: "1.5T", trans: "6DCT", ot: "180", tezlik: "180 km/s", sarf: "<6.9 L", bak: "55 L", olcham: "4605x1890x1700", clearance: "25 cm", shina: "235/55R18", drive: "FWD", tormoz: "disk", u_vazn: "2015 kg", y_vazn: "1590 kg" },
+            "299000000": { name: "JAC JS8 Pro", img: "https://lh3.googleusercontent.com/u/0/d/1q3Z5_r-1bahFOVtsuYz6Y8U8lrvCkFyB", turi: "krossover", yili: "2026", urin: "7", motor: "1.5T", trans: "7DCT", ot: "180", tezlik: "170 km/s", sarf: "<7.5 L", bak: "58 L", olcham: "4825x1870x1758", clearance: "16 cm", shina: "265/50R19", drive: "FWD", tormoz: "disk", u_vazn: "2225 kg", y_vazn: "1675 kg" },
+            "423500000": { name: "JAC RF8", img: "https://lh3.googleusercontent.com/u/0/d/1CCY8i1AkEskRpft3bo0hjnC7fG5pnnNC", turi: "miniven", yili: "2026", urin: "7", motor: "2.0T", trans: "8GDI", ot: "253", tezlik: "210 km/s", sarf: "<8.9 L", bak: "65 L", olcham: "5215x1895x1830", clearance: "16 cm", shina: "225/55R18", drive: "FWD", tormoz: "disk", u_vazn: "2110 kg", y_vazn: "2675 kg" },
+            "314600000": { name: "JAC T8", img: "https://lh3.googleusercontent.com/u/0/d/1HUiquLb4Gg0y4NbmdZu4msPdLOrzI-ZL", turi: "pikap", yili: "2026", urin: "5", motor: "2.0T", trans: "6MT", ot: "191", tezlik: "120 km/s", sarf: "<8.5 L", bak: "80 L", olcham: "5990x2098x2645", clearance: "16 cm", shina: "195/75R16", drive: "4WD", tormoz: "disk_b", u_vazn: "4000 kg", y_vazn: "2800 kg" },
+            "399300000": { name: "JAC T9", img: "https://lh3.googleusercontent.com/u/0/d/1KRd0ttwyvL8DCOzAhFNET-9-UjFfotrP", turi: "pikap", yili: "2026", urin: "5", motor: "2.0T", trans: "8AT", ot: "231", tezlik: "150 km/s", sarf: "<10 L", bak: "76 L", olcham: "5330x1965x1920", clearance: "21 cm", shina: "265/60R18", drive: "4WD", tormoz: "disk", u_vazn: "3055 kg", y_vazn: "2055 kg" },
+            "231840000": { name: "JAC X200 (bort)", img: "https://lh3.googleusercontent.com/u/0/d/1F_UaGTQCj2pbLJBpM-rZEynO0-fZ0xHb", turi: "mini_y", yili: "2025", urin: "2", motor: "2.0", trans: "5MT", ot: "147", tezlik: "110 km/s", sarf: "<8.2 L", bak: "65 L", olcham: "5190×1750×1945", clearance: "18 cm", shina: "195/70R15C", drive: "RWD", tormoz: "disk_b", u_vazn: "3490 kg", y_vazn: "1645 kg", variant: "bort" },
+            "238560000": { name: "JAC X200 (tent)", img: "https://lh3.googleusercontent.com/u/0/d/1F_UaGTQCj2pbLJBpM-rZEynO0-fZ0xHb", turi: "mini_y", yili: "2025", urin: "2", motor: "2.0", trans: "5MT", ot: "147", tezlik: "110 km/s", sarf: "<8.2 L", bak: "65 L", olcham: "5190×1750×2640", clearance: "18 cm", shina: "195/70R15C", drive: "RWD", tormoz: "disk_b", u_vazn: "3500 kg", y_vazn: "1775 kg", variant: "tent" },
+            "258720000": { name: "JAC X200 (prom.)", img: "https://lh3.googleusercontent.com/u/0/d/1F_UaGTQCj2pbLJBpM-rZEynO0-fZ0xHb", turi: "mini_y", yili: "2025", urin: "2", motor: "2.0", trans: "5MT", ot: "147", tezlik: "110 km/s", sarf: "<8.2 L", bak: "65 L", olcham: "5190×1760×2610", clearance: "18 cm", shina: "195/70R15C", drive: "RWD", tormoz: "disk_b", u_vazn: "3500 kg", y_vazn: "1780 kg", variant: "prom" }
         };
 
         function formatNumber(n) { return n.toLocaleString('en-US'); }
@@ -294,13 +312,22 @@
         function updatePrice() {
             const id = document.getElementById('modelSelect').value;
             const car = carData[id];
-            const s = translations[currentLang].specs;
+            const t = translations[currentLang];
+            const s = t.specs;
+            const v = t.vals;
+            
             document.getElementById('carImage').src = car.img;
             document.getElementById('priceDisplay').value = formatNumber(parseInt(id));
-            document.getElementById('carName').innerText = car.name;
+            
+            let displayName = car.name;
+            if(car.variant) {
+                const baseName = car.name.split(' (')[0];
+                displayName = `${baseName} (${v[car.variant]})`;
+            }
+            document.getElementById('carName').innerText = displayName;
             
             document.getElementById('carSpecs').innerHTML = `
-                <div class="spec-item"><i class="fa-solid fa-car"></i> <span>${s.turi}: <b>${car.turi}</b></span></div>
+                <div class="spec-item"><i class="fa-solid fa-car"></i> <span>${s.turi}: <b>${v[car.turi]}</b></span></div>
                 <div class="spec-item"><i class="fa-solid fa-calendar"></i> <span>${s.yili}: <b>${car.yili}</b></span></div>
                 <div class="spec-item"><i class="fa-solid fa-users"></i> <span>${s.urin}: <b>${car.urin}</b></span></div>
                 <div class="spec-item"><i class="fa-solid fa-weight-scale"></i> <span>${s.u_vazn}: <b>${car.u_vazn}</b></span></div>
@@ -315,7 +342,7 @@
                 <div class="spec-item"><i class="fa-solid fa-arrows-up-down"></i> <span>${s.clearance}: <b>${car.clearance}</b></span></div>
                 <div class="spec-item"><i class="fa-solid fa-dharmachakra"></i> <span>${s.shina}: <b>${car.shina}</b></span></div>
                 <div class="spec-item"><i class="fa-solid fa-truck-monster"></i> <span>${s.drive}: <b>${car.drive}</b></span></div>
-                <div class="spec-item"><i class="fa-solid fa-circle-stop"></i> <span>${s.tormoz}: <b>${car.tormoz}</b></span></div>
+                <div class="spec-item"><i class="fa-solid fa-circle-stop"></i> <span>${s.tormoz}: <b>${v[car.tormoz]}</b></span></div>
             `;
             calculate();
         }
@@ -367,6 +394,17 @@
             let value = input.value.replace(/\D/g, "");
             if (value !== "") { input.value = formatNumber(parseInt(value)); }
             calculate();
+        }
+
+        /* IOS VA MOBIL UCHUN PRINT FUNKSIYASI */
+        function handlePrint() {
+            if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+                setTimeout(() => {
+                    window.print();
+                }, 300);
+            } else {
+                window.print();
+            }
         }
         
         window.onload = function() {
