@@ -20,7 +20,7 @@
         .top-bar { 
             background: var(--header-gradient);
             padding: 12px 25px;
-            margin: -15px -15px 20px -15px;
+            margin: -15px -15px 5px -15px; /* Pastki margin kamaytirildi */
             display: flex; 
             justify-content: space-between; 
             align-items: center;
@@ -28,19 +28,29 @@
             border-bottom: 3px solid var(--jac-red);
         }
         .brand-name { font-weight: 900; font-size: 28px; letter-spacing: 1.5px; }
+        
         .header-contacts { display: flex; align-items: center; gap: 15px; }
         .header-text { line-height: 1.2; font-size: 14px; font-weight: 600; text-align: right; }
         .contact-link { 
-            color: white; 
-            text-decoration: none; 
-            background: rgba(255,255,255,0.15); 
-            padding: 10px; 
-            border-radius: 10px; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center;
-            border: 1px solid rgba(255,255,255,0.2);
+            color: white; text-decoration: none; background: rgba(255,255,255,0.15); 
+            padding: 10px; border-radius: 10px; display: flex; align-items: center; 
+            justify-content: center; border: 1px solid rgba(255,255,255,0.2);
         }
+
+        /* Tillar paneli - Top-bar tashqarisida, o'ng tomonda */
+        .lang-wrapper {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 10px;
+            padding-right: 5px;
+        }
+        .lang-bar { display: flex; gap: 5px; }
+        .lang-btn { 
+            padding: 4px 12px; border: 1px solid #cbd5e0; background: #fff; 
+            color: var(--jac-dark); border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: 700; transition: 0.3s;
+        }
+        .lang-btn.active { background: var(--jac-red); border-color: var(--jac-red); color: white; }
+        .lang-btn:hover { background: #f1f5f9; }
 
         .model-header {
             background: radial-gradient(circle at left, #ffffff 0%, #f1f5f9 100%);
@@ -84,48 +94,17 @@
         .social-icons a { color: var(--jac-blue); text-decoration: none; }
 
         @media print {
+            .lang-wrapper, .action-btns { display: none !important; }
             @page { size: A4; margin: 5mm; }
             body { background: white; padding: 0; margin: 0; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
             .container { max-width: 100% !important; padding: 0 !important; margin: 0 !important; border: none !important; }
             .top-bar { margin: 0 0 10px 0 !important; padding: 8px 20px !important; }
             .brand-name { font-size: 20px !important; }
-            .header-text { font-size: 10px !important; }
-            .contact-link { padding: 6px !important; }
-            .model-header { 
-                padding: 10px 15px !important; 
-                margin-bottom: 10px !important; 
-                height: auto !important; 
-                display: flex !important; 
-                flex-direction: row !important;
-                align-items: center !important;
-                gap: 20px !important;
-            }
-            .model-header img { height: 90px !important; width: auto !important; }
-            .model-title-box h3 { font-size: 20px !important; margin: 0 !important; }
-            .car-specs { 
-                padding: 6px !important; 
-                gap: 4px !important; 
-                margin-bottom: 10px !important; 
-                display: grid !important; 
-                grid-template-columns: repeat(4, 1fr) !important;
-            }
-            .spec-item { font-size: 9px !important; padding-bottom: 2px !important; }
-            .inputs-section { padding: 8px; gap: 6px; margin-bottom: 5px !important; }
-            .section-title { font-size: 11px !important; }
-            .field label { font-size: 9px !important; }
-            input, select { padding: 4px !important; font-size: 11px !important; }
-            .action-btns { display: none !important; }
-            .table-header { margin-top: 5px !important; padding: 5px 0 !important; font-size: 14px !important; }
-            .table-container { max-height: none !important; overflow: visible !important; border: 1px solid var(--jac-blue) !important; }
-            th { padding: 4px !important; font-size: 9px !important; background: var(--jac-blue) !important; color: white !important; }
-            td { padding: 2px 2px !important; font-size: 9px !important; line-height: 1 !important; border: 0.5px solid #ccc !important; }
-            .footer { page-break-inside: avoid; margin-top: 5px !important; font-size: 10px !important; }
         }
 
         @media (max-width: 768px) {
-            .top-bar { flex-direction: row; padding: 10px; }
             .car-specs, .inputs-section { grid-template-columns: repeat(2, 1fr); }
-            .model-header { flex-direction: column; height: auto; }
+            .model-header { flex-direction: column; }
             .model-header img { width: 85%; height: auto; }
         }
     </style>
@@ -146,6 +125,14 @@
             </div>
         </div>
 
+        <div class="lang-wrapper">
+            <div class="lang-bar">
+                <button class="lang-btn active" onclick="setLanguage('uz', event)">UZB</button>
+                <button class="lang-btn" onclick="setLanguage('ru', event)">РУС</button>
+                <button class="lang-btn" onclick="setLanguage('en', event)">ENG</button>
+            </div>
+        </div>
+
         <div class="model-header">
             <img id="carImage" src="" alt="JAC Car">
             <div class="model-title-box"><h3 id="carName">JAC MODEL</h3></div>
@@ -154,9 +141,9 @@
         <div class="car-specs" id="carSpecs"></div>
 
         <div class="inputs-section">
-            <div class="section-title">KIRITISH MA'LUMOTLARI</div>
+            <div class="section-title" id="t-input-title">KIRITISH MA'LUMOTLARI</div>
             <div class="field" style="grid-column: span 2;">
-                <label>Modelni tanlang</label>
+                <label id="t-model-label">Modelni tanlang</label>
                 <select id="modelSelect" onchange="updatePrice()">
                     <option value="199080000">JAC M3 VAN</option>
                     <option value="215460000">JAC M3 LUXE</option>
@@ -174,44 +161,44 @@
                     <option value="258720000">JAC X200 (prom.)</option>
                 </select>
             </div>
-            <div class="field"><label>Narxi (UZS)</label><input type="text" id="priceDisplay" oninput="formatAndCalculate()"></div>
-            <div class="field"><label>Boshl. (%)</label><input type="number" id="downP" value="30" oninput="calculate()"></div>
-            <div class="field"><label>Stavka (%)</label><input type="number" id="rate" value="25" oninput="calculate()"></div>
-            <div class="field"><label>Muddat (oy)</label><input type="number" id="term" value="60" oninput="calculate()"></div>
-            <div class="field"><label>Sug'urta (%)</label><input type="number" id="insP" value="1" oninput="calculate()"></div>
+            <div class="field"><label id="t-price-label">Narxi (UZS)</label><input type="text" id="priceDisplay" oninput="formatAndCalculate()"></div>
+            <div class="field"><label id="t-downp-label">Boshl. (%)</label><input type="number" id="downP" value="30" oninput="calculate()"></div>
+            <div class="field"><label id="t-rate-label">Stavka (%)</label><input type="number" id="rate" value="25" oninput="calculate()"></div>
+            <div class="field"><label id="t-term-label">Muddat (oy)</label><input type="number" id="term" value="60" oninput="calculate()"></div>
+            <div class="field"><label id="t-insp-label">Sug'urta (%)</label><input type="number" id="insP" value="1" oninput="calculate()"></div>
             <div class="field">
-                <label>Grafik turi</label>
+                <label id="t-type-label">Grafik turi</label>
                 <select id="paymentType" onchange="calculate()">
                     <option value="annuitet">ANNUITET</option>
                     <option value="differential">DIFFERENSIAL</option>
                 </select>
             </div>
 
-            <div class="section-title">NATIJALAR</div>
-            <div class="field"><label>Kredit summasi</label><input type="text" id="loanInp" class="res-input" readonly></div>
-            <div class="field"><label>Boshlang'ich to'lov</label><input type="text" id="downSumInp" class="res-input" readonly style="color:var(--res-orange)"></div>
-            <div class="field"><label>Sug'urta to'lovi</label><input type="text" id="insSumInp" class="res-input" readonly style="color:var(--res-brown)"></div>
-            <div class="field"><label>Jami boshl. xarajat</label><input type="text" id="totalInitInp" class="res-input" readonly style="color:var(--res-red)"></div>
-            <div class="field"><label>Oylik to'lov</label><input type="text" id="monthlyInp" class="res-input" readonly style="color:var(--res-green)"></div>
-            <div class="field"><label>Kunlik to'lov</label><input type="text" id="dailyInp" class="res-input" readonly style="color:var(--res-skyblue)"></div>
+            <div class="section-title" id="t-result-title">NATIJALAR</div>
+            <div class="field"><label id="t-loan-label">Kredit summasi</label><input type="text" id="loanInp" class="res-input" readonly></div>
+            <div class="field"><label id="t-downsum-label">Boshlang'ich to'lov</label><input type="text" id="downSumInp" class="res-input" readonly style="color:var(--res-orange)"></div>
+            <div class="field"><label id="t-inssum-label">Sug'urta to'lovi</label><input type="text" id="insSumInp" class="res-input" readonly style="color:var(--res-brown)"></div>
+            <div class="field"><label id="t-totalinit-label">Jami boshl. xarajat</label><input type="text" id="totalInitInp" class="res-input" readonly style="color:var(--res-red)"></div>
+            <div class="field"><label id="t-monthly-label">Oylik to'lov</label><input type="text" id="monthlyInp" class="res-input" readonly style="color:var(--res-green)"></div>
+            <div class="field"><label id="t-daily-label">Kunlik to'lov</label><input type="text" id="dailyInp" class="res-input" readonly style="color:var(--res-skyblue)"></div>
         </div>
 
-        <div class="table-header"><i class="fa-solid fa-calendar-days"></i> TO'LOV JADVALI</div>
+        <div class="table-header" id="t-table-header"><i class="fa-solid fa-calendar-days"></i> TO'LOV JADVALI</div>
         <div class="table-container">
             <table>
-                <thead><tr><th>№</th><th>Asosiy qarz</th><th>Foiz to'lovi</th><th>Jami to'lov</th><th>Qoldiq qarz</th></tr></thead>
+                <thead><tr id="t-table-head"><th>№</th><th>Asosiy qarz</th><th>Foiz to'lovi</th><th>Jami to'lov</th><th>Qoldiq qarz</th></tr></thead>
                 <tbody id="tableBody"></tbody>
             </table>
         </div>
 
         <div class="action-btns">
-            <button class="btn-action btn-print" onclick="window.print()"><i class="fa-solid fa-print"></i> CHOP ETISH</button>
+            <button class="btn-action btn-print" onclick="window.print()" id="t-btn-print"><i class="fa-solid fa-print"></i> CHOP ETISH</button>
         </div>
 
         <div class="footer">
             <div>© 2026 <b>JACAUTO</b></div>
             <div class="footer-right">
-                <span>Creator: <b>Nematovich</b></span>
+                <span id="t-creator">Creator: <b>Nematovich</b></span>
                 <div class="social-icons">
                     <a href="https://t.me/rasul_2108" target="_blank"><i class="fa-brands fa-telegram"></i></a>
                     <a href="https://www.instagram.com/rasul_jacauto/" target="_blank"><i class="fa-brands fa-instagram"></i></a>
@@ -221,6 +208,38 @@
     </div>
 
     <script>
+        let currentLang = 'uz';
+
+        const translations = {
+            uz: {
+                inputTitle: "KIRITISH MA'LUMOTLARI", modelLabel: "Modelni tanlang", priceLabel: "Narxi (UZS)", 
+                downpLabel: "Boshl. (%)", rateLabel: "Stavka (%)", termLabel: "Muddat (oy)", inspLabel: "Sug'urta (%)",
+                typeLabel: "Grafik turi", resultTitle: "NATIJALAR", loanLabel: "Kredit summasi", downsumLabel: "Boshlang'ich to'lov",
+                inssumLabel: "Sug'urta to'lovi", totalinitLabel: "Jami boshl. xarajat", monthlyLabel: "Oylik to'lov", 
+                dailyLabel: "Kunlik to'lov", tableHeader: "TO'LOV JADVALI", tableHead: ["№", "Asosiy qarz", "Foiz to'lovi", "Jami to'lov", "Qoldiq qarz"],
+                btnPrint: "CHOP ETISH", creator: "Creator: <b>Nematovich</b>",
+                specs: { turi: "Turi", yili: "Yili", urin: "O'rin soni", u_vazn: "Umumiy vazn", y_vazn: "Yuksiz vazn", motor: "Motor", trans: "Transmissiya", ot: "Ot kuchi", tezlik: "Maks. tezlik", sarf: "Yoqilg'i sarfi", bak: "Bak sig'imi", olcham: "O'lchamlari", clearance: "Klirens", shina: "Shina o'lchami", drive: "G'ildirak (Drive)", tormoz: "Tormoz turi" }
+            },
+            ru: {
+                inputTitle: "ВХОДНЫЕ ДАННЫЕ", modelLabel: "Выберите модель", priceLabel: "Цена (UZS)", 
+                downpLabel: "Первон. (%)", rateLabel: "Ставка (%)", termLabel: "Срок (мес)", inspLabel: "Страховка (%)",
+                typeLabel: "Тип графика", resultTitle: "РЕЗУЛЬТАТЫ", loanLabel: "Сумма кредита", downsumLabel: "Первоначальный взнос",
+                inssumLabel: "Сумма страховки", totalinitLabel: "Итого первон. расход", monthlyLabel: "Ежемесячный платеж", 
+                dailyLabel: "Платеж в день", tableHeader: "ГРАФИК ПЛАТЕЖЕЙ", tableHead: ["№", "Осн. долг", "Проценты", "Всего", "Остаток"],
+                btnPrint: "ПЕЧАТЬ", creator: "Создатель: <b>Nematovich</b>",
+                specs: { turi: "Тип", yili: "Год", urin: "Мест", u_vazn: "Общий вес", y_vazn: "Вес без нагрузки", motor: "Мотор", trans: "Трансмиссия", ot: "Лошадиные силы", tezlik: "Макс. скорость", sarf: "Расход топлива", bak: "Объем бака", olcham: "Габариты", clearance: "Клиренс", shina: "Размер шин", drive: "Привод", tormoz: "Тип тормозов" }
+            },
+            en: {
+                inputTitle: "INPUT DATA", modelLabel: "Select Model", priceLabel: "Price (UZS)", 
+                downpLabel: "Down Pay (%)", rateLabel: "Rate (%)", termLabel: "Term (month)", inspLabel: "Insurance (%)",
+                typeLabel: "Payment Type", resultTitle: "RESULTS", loanLabel: "Loan Amount", downsumLabel: "Down Payment",
+                inssumLabel: "Insurance Amount", totalinitLabel: "Total Initial Cost", monthlyLabel: "Monthly Payment", 
+                dailyLabel: "Daily Payment", tableHeader: "PAYMENT SCHEDULE", tableHead: ["№", "Principal", "Interest", "Total", "Balance"],
+                btnPrint: "PRINT", creator: "Creator: <b>Nematovich</b>",
+                specs: { turi: "Type", yili: "Year", urin: "Seats", u_vazn: "Gross Weight", y_vazn: "Curb Weight", motor: "Engine", trans: "Transmission", ot: "Horsepower", tezlik: "Max Speed", sarf: "Fuel Consumption", bak: "Fuel Tank", olcham: "Dimensions", clearance: "Clearance", shina: "Tire Size", drive: "Drive", tormoz: "Brake Type" }
+            }
+        };
+
         const carData = {
             "199080000": { name: "JAC M3 VAN", img: "https://lh3.googleusercontent.com/u/0/d/1jQ2PiyDQbPkNPdnWGKq0RaHiskG_MVQF", turi: "Furgon", yili: "2026", urin: "2", motor: "1.8", trans: "5MT", ot: "134", tezlik: "<155 km/s", sarf: "<8.5 L", bak: "55 L", olcham: "5115x1765x1900", clearance: "16 cm", shina: "195/70R15", drive: "RWD", tormoz: "Disk/Baraban", u_vazn: "2600 kg", y_vazn: "1600 kg" },
             "215460000": { name: "JAC M3 LUXE", img: "https://lh3.googleusercontent.com/u/0/d/1tcorTc9GXb6QjEAVZXI5yDuKPF9zmWUE", turi: "Miniven", yili: "2025", urin: "9", motor: "1.8", trans: "5MT", ot: "134", tezlik: "<155 km/s", sarf: "<8.5 L", bak: "55 L", olcham: "5115x1765x1900", clearance: "16 cm", shina: "205/65R15", drive: "RWD", tormoz: "Disk/Baraban", u_vazn: "2378 kg", y_vazn: "1640 kg" },
@@ -240,30 +259,63 @@
 
         function formatNumber(n) { return n.toLocaleString('en-US'); }
 
+        function setLanguage(lang, event) {
+            currentLang = lang;
+            if(event) {
+                document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+                event.target.classList.add('active');
+            }
+            const t = translations[lang];
+            document.getElementById('t-input-title').innerText = t.inputTitle;
+            document.getElementById('t-model-label').innerText = t.modelLabel;
+            document.getElementById('t-price-label').innerText = t.priceLabel;
+            document.getElementById('t-downp-label').innerText = t.downpLabel;
+            document.getElementById('t-rate-label').innerText = t.rateLabel;
+            document.getElementById('t-term-label').innerText = t.termLabel;
+            document.getElementById('t-insp-label').innerText = t.inspLabel;
+            document.getElementById('t-type-label').innerText = t.typeLabel;
+            document.getElementById('t-result-title').innerText = t.resultTitle;
+            document.getElementById('t-loan-label').innerText = t.loanLabel;
+            document.getElementById('t-downsum-label').innerText = t.downsumLabel;
+            document.getElementById('t-inssum-label').innerText = t.inssumLabel;
+            document.getElementById('t-totalinit-label').innerText = t.totalinitLabel;
+            document.getElementById('t-monthly-label').innerText = t.monthlyLabel;
+            document.getElementById('t-daily-label').innerText = t.dailyLabel;
+            document.getElementById('t-table-header').innerHTML = `<i class="fa-solid fa-calendar-days"></i> ${t.tableHeader}`;
+            document.getElementById('t-btn-print').innerHTML = `<i class="fa-solid fa-print"></i> ${t.btnPrint}`;
+            document.getElementById('t-creator').innerHTML = t.creator;
+
+            let h = ""; t.tableHead.forEach(txt => h += `<th>${txt}</th>`);
+            document.getElementById('t-table-head').innerHTML = h;
+
+            updatePrice();
+        }
+
         function updatePrice() {
             const id = document.getElementById('modelSelect').value;
             const car = carData[id];
+            const s = translations[currentLang].specs;
             document.getElementById('carImage').src = car.img;
             document.getElementById('priceDisplay').value = formatNumber(parseInt(id));
             document.getElementById('carName').innerText = car.name;
             
             document.getElementById('carSpecs').innerHTML = `
-                <div class="spec-item"><i class="fa-solid fa-car"></i> <span>Turi: <b>${car.turi}</b></span></div>
-                <div class="spec-item"><i class="fa-solid fa-calendar"></i> <span>Yili: <b>${car.yili}</b></span></div>
-                <div class="spec-item"><i class="fa-solid fa-users"></i> <span>O'rinlar soni: <b>${car.urin}</b></span></div>
-                <div class="spec-item"><i class="fa-solid fa-weight-scale"></i> <span>Umumiy vazn: <b>${car.u_vazn}</b></span></div>
-                <div class="spec-item"><i class="fa-solid fa-weight-hanging"></i> <span>Yuksiz vazn: <b>${car.y_vazn}</b></span></div>
-                <div class="spec-item"><i class="fa-solid fa-microchip"></i> <span>Motor: <b>${car.motor}</b></span></div>
-                <div class="spec-item"><i class="fa-solid fa-gears"></i> <span>Transmissiya: <b>${car.trans}</b></span></div>
-                <div class="spec-item"><i class="fa-solid fa-bolt"></i> <span>Ot kuchi: <b>${car.ot}</b></span></div>
-                <div class="spec-item"><i class="fa-solid fa-gauge-high"></i> <span>Maks tezlik: <b>${car.tezlik}</b></span></div>
-                <div class="spec-item"><i class="fa-solid fa-gas-pump"></i> <span>Yoqilg'i sarfi: <b>${car.sarf}</b></span></div>
-                <div class="spec-item"><i class="fa-solid fa-oil-can"></i> <span>Bak sig'imi: <b>${car.bak}</b></span></div>
-                <div class="spec-item"><i class="fa-solid fa-ruler-combined"></i> <span>O'lchamlari: <b>${car.olcham}</b></span></div>
-                <div class="spec-item"><i class="fa-solid fa-arrows-up-down"></i> <span>Klirens: <b>${car.clearance}</b></span></div>
-                <div class="spec-item"><i class="fa-solid fa-dharmachakra"></i> <span>Shina o'lchami: <b>${car.shina}</b></span></div>
-                <div class="spec-item"><i class="fa-solid fa-truck-monster"></i> <span>Privod: <b>${car.drive}</b></span></div>
-                <div class="spec-item"><i class="fa-solid fa-circle-stop"></i> <span>Tormoz turi: <b>${car.tormoz}</b></span></div>
+                <div class="spec-item"><i class="fa-solid fa-car"></i> <span>${s.turi}: <b>${car.turi}</b></span></div>
+                <div class="spec-item"><i class="fa-solid fa-calendar"></i> <span>${s.yili}: <b>${car.yili}</b></span></div>
+                <div class="spec-item"><i class="fa-solid fa-users"></i> <span>${s.urin}: <b>${car.urin}</b></span></div>
+                <div class="spec-item"><i class="fa-solid fa-weight-scale"></i> <span>${s.u_vazn}: <b>${car.u_vazn}</b></span></div>
+                <div class="spec-item"><i class="fa-solid fa-weight-hanging"></i> <span>${s.y_vazn}: <b>${car.y_vazn}</b></span></div>
+                <div class="spec-item"><i class="fa-solid fa-microchip"></i> <span>${s.motor}: <b>${car.motor}</b></span></div>
+                <div class="spec-item"><i class="fa-solid fa-gears"></i> <span>${s.trans}: <b>${car.trans}</b></span></div>
+                <div class="spec-item"><i class="fa-solid fa-bolt"></i> <span>${s.ot}: <b>${car.ot}</b></span></div>
+                <div class="spec-item"><i class="fa-solid fa-gauge-high"></i> <span>${s.tezlik}: <b>${car.tezlik}</b></span></div>
+                <div class="spec-item"><i class="fa-solid fa-gas-pump"></i> <span>${s.sarf}: <b>${car.sarf}</b></span></div>
+                <div class="spec-item"><i class="fa-solid fa-oil-can"></i> <span>${s.bak}: <b>${car.bak}</b></span></div>
+                <div class="spec-item"><i class="fa-solid fa-ruler-combined"></i> <span>${s.olcham}: <b>${car.olcham}</b></span></div>
+                <div class="spec-item"><i class="fa-solid fa-arrows-up-down"></i> <span>${s.clearance}: <b>${car.clearance}</b></span></div>
+                <div class="spec-item"><i class="fa-solid fa-dharmachakra"></i> <span>${s.shina}: <b>${car.shina}</b></span></div>
+                <div class="spec-item"><i class="fa-solid fa-truck-monster"></i> <span>${s.drive}: <b>${car.drive}</b></span></div>
+                <div class="spec-item"><i class="fa-solid fa-circle-stop"></i> <span>${s.tormoz}: <b>${car.tormoz}</b></span></div>
             `;
             calculate();
         }
@@ -279,7 +331,6 @@
 
             const downSum = price * (downPercent / 100);
             const loanAmount = price - downSum;
-            // O'ZGARTIRILGAN: Sug'urta kredit summasidan hisoblanadi
             const insSum = loanAmount * (insPercent / 100) * (months / 12);
             const mRate = (annualRate / 100) / 12;
 
@@ -317,7 +368,10 @@
             if (value !== "") { input.value = formatNumber(parseInt(value)); }
             calculate();
         }
-        updatePrice();
+        
+        window.onload = function() {
+            setLanguage('uz', null);
+        };
     </script>
 </body>
 </html>
