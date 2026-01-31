@@ -28,8 +28,15 @@
             border-bottom: 3px solid var(--jac-red);
             gap: 10px;
         }
-        .brand-name { font-weight: 900; font-size: clamp(20px, 5vw, 28px); letter-spacing: 1.5px;
-            flex-shrink: 0; }
+        
+        /* Logo uchun maxsus stil */
+        .brand-logo {
+            height: clamp(30px, 6vw, 45px);
+            width: auto;
+            object-fit: contain;
+            display: block;
+        }
+
         .header-contacts { display: flex; align-items: center; gap: clamp(8px, 2vw, 15px);
             text-align: right; }
         .header-text { line-height: 1.3; font-size: clamp(11px, 3vw, 14px); font-weight: 600;
@@ -163,9 +170,8 @@
                 margin: 0 0 4px 0 !important;
             }
             
-            .brand-name {
-                font-size: 15px !important;
-                letter-spacing: 1px !important;
+            .brand-logo {
+                height: 30px !important;
             }
             
             .header-text {
@@ -179,7 +185,7 @@
                 font-size: 11px !important;
             }
             
-            /* Model-header - flex joylashuv saqlanadi */
+            /* Model-header */
             .model-header {
                 padding: 5px 12px !important;
                 margin-bottom: 5px !important;
@@ -258,13 +264,6 @@
                 font-size: 9px !important;
             }
             
-            /* Grafik */
-            #combinedChart {
-                max-height: 260px !important;
-                page-break-inside: avoid;
-                margin-bottom: 5px;
-            }
-            
             .table-header {
                 font-size: 13px !important;
                 margin-top: 5px !important;
@@ -277,10 +276,8 @@
                 page-break-inside: auto;
             }
             
-            /* Jadval */
             table {
                 font-size: 7px !important;
-                page-break-inside: auto;
             }
             
             th {
@@ -302,7 +299,6 @@
                 font-size: 8px !important;
             }
             
-            /* Footer */
             .footer {
                 margin-top: 5px !important;
                 padding: 4px 0 !important;
@@ -313,74 +309,12 @@
                 font-size: 10px !important;
                 gap: 7px !important;
             }
-            
-            /* Sahifa tanaffuslari */
-            h2, .table-header {
-                page-break-after: avoid;
-            }
-            
-            tr {
-                page-break-inside: avoid;
-                page-break-after: auto;
-            }
-            
-            .chart-container {
-                page-break-after: avoid;
-            }
-            
-            /* PDF saqlaganda ranglar saqlansin */
+
             @media print and (color) {
                 body, * {
                     -webkit-print-color-adjust: exact !important;
                     print-color-adjust: exact !important;
                     color-adjust: exact !important;
-                }
-            }
-            
-            /* Oq-qora printerda avtomatik qora rangga o'tsin */
-            @media print and (monochrome) {
-                * {
-                    color: black !important;
-                    background-color: white !important;
-                }
-                
-                .top-bar {
-                    background: white !important;
-                    color: black !important;
-                    border-bottom-color: black !important;
-                }
-                
-                .contact-link {
-                    background: white !important;
-                    border-color: black !important;
-                }
-                
-                th {
-                    background: #f0f0f0 !important;
-                    color: black !important;
-                }
-                
-                tr.total-row {
-                    background: #e0e0e0 !important;
-                    color: black !important;
-                }
-                
-                .res-input {
-                    background-color: white !important;
-                    color: black !important;
-                }
-                
-                button {
-                    background: white !important;
-                    color: black !important;
-                    border: 1px solid black !important;
-                }
-            }
-            
-            /* Rangli printerda ham natijalar qora bo'lsin (PDF emas) */
-            @media print and (color) {
-                #downSumInp, #insSumInp, #totalInitInp, #monthlyInp, #dailyInp, #totalIntInp {
-                    color: black !important;
                 }
             }
         }
@@ -400,7 +334,8 @@
 <body>
     <div class="container">
         <div class="top-bar">
-            <div class="brand-name">JACAUTO</div>
+            <img src="https://lh3.googleusercontent.com/d/1PMxVaWUIl9nsW9HAt6zCo2ZX188TaBej" alt="JAC Logo" class="brand-logo">
+            
             <div class="header-contacts">
                 <div class="header-text">+998 93 273 21 08<br>www.jacauto.uz</div>
                 <a href="tel:+998932732108" class="contact-link"><i class="fa-solid fa-phone-flip"></i></a>
@@ -538,24 +473,23 @@
             }
         };
 
-        // qatoridan boshlab carData obyektini quyidagiga almashtiring:
-const carData = {
-    "199080000": { name: "JAC M3 VAN", sub: {uz:"Ishonchli va tejamkor furgon", ru:"Надежный фургон", en:"Reliable van"}, img: "https://lh3.googleusercontent.com/d/10Z2luzS1Ov_1UMGghXESVxfon_FH0a4K", turi: "furgon", yili: "2026", urin: "2", motor: "1.8", trans: "5MT", ot: "134", tezlik: "<155 km/s", sarf: "<8.5 L", bak: "55 L", olcham: "5115x1765x1900", clearance: "16 cm", shina: "195/70R15", drive: "RWD", tormoz: "disk_b", u_vazn: "2600 kg", y_vazn: "1600 kg" },
-    "215460000": { name: "JAC M3 LUXE", sub: {uz:"Keng va qulay biznes transporti", ru:"Бизнес-минивэн", en:"Business MPV"}, img: "https://lh3.googleusercontent.com/d/1A7ldKXl_S2dBGyfxLGsO-laEqi6QdrYq", turi: "miniven", yili: "2026", urin: "9", motor: "1.8", trans: "5MT", ot: "134", tezlik: "<155 km/s", sarf: "<8.5 L", bak: "55 L", olcham: "5115x1765x1900", clearance: "16 cm", shina: "205/65R15", drive: "RWD", tormoz: "disk_b", u_vazn: "2378 kg", y_vazn: "1640 kg" },
-    "243180000": { name: "JAC M4 LUXE", sub: {uz:"Ishonchli hamkor, qulay safar", ru:"Комфортный минивэн", en:"Comfort MPV"}, img: "https://lh3.googleusercontent.com/d/1zIG91qhOYpi1It64aEXL4MCyngerddBK", turi: "miniven", yili: "2026", urin: "9", motor: "2.0", trans: "5MT", ot: "144", tezlik: "<160 km/s", sarf: "<9.5 L", bak: "80 L", olcham: "5200x1890x1970", clearance: "16 cm", shina: "215/65R16", drive: "RWD", tormoz: "disk", u_vazn: "2815 kg", y_vazn: "1930 kg" },
-    "365400000": { name: "JAC SUNRAY VAN", sub: {uz:"Keng hajmli yuk tashuvchi furgon", ru:"Грузовой фургон", en:"Cargo van"}, img: "https://lh3.googleusercontent.com/d/1MXmwCnj-8rV1Lt64j3f9dIm2DOMid0W-", turi: "furgon", yili: "2026", urin: "3", motor: "2.0", trans: "6MT", ot: "191", tezlik: "<120 km/s", sarf: "<8.5 L", bak: "80 L", olcham: "5990x2098x2645", clearance: "16 cm", shina: "195/75R16", drive: "RWD", tormoz: "disk_b", u_vazn: "3490 kg", y_vazn: "2655 kg" },
-    "396900000": { name: "JAC SUNRAY LUXE", sub: {uz:"Zamonaviy va sig'imli mikroavtobus", ru:"Микроавтобус", en:"Minibus"}, img: "https://lh3.googleusercontent.com/d/1AwSvAzRlSzwiUYl0K2IaShJMuOW3CWlN", turi: "mikro", yili: "2026", urin: "16", motor: "2.0", trans: "6MT", ot: "190", tezlik: "<120 km/s", sarf: "<8.5 L", bak: "80 L", olcham: "5990x2098x2645", clearance: "16 cm", shina: "215/75R16", drive: "RWD", tormoz: "disk", u_vazn: "4000 kg", y_vazn: "2800 kg" },
-    "225000000": { name: "JAC J7 Luxury", sub: {uz:"Elegant dizayn va komfort", ru:"Элегантный седан", en:"Elegant sedan"}, img: "https://lh3.googleusercontent.com/d/1efOKUp4kykvtU67cosuokDmcNr-BlQ-z", turi: "sedan", yili: "2024", urin: "5", motor: "1.5T", trans: "6CVT", ot: "150", tezlik: "170 km/s", sarf: "<6.5 L", bak: "55 L", olcham: "4772x1820x1492", clearance: "12 cm", shina: "215/50R17", drive: "FWD", tormoz: "disk", u_vazn: "1865 kg", y_vazn: "1440 kg" },
-    "280000000": { name: "JAC JS6 Luxury", sub: {uz:"Innovatsion texnologiyali krossover", ru:"Hi-tech кроссовер", en:"Hi-tech crossover"}, img: "https://lh3.googleusercontent.com/d/1KJgGZDRCmUiP1joAhXOAl-Ej6cyBNHH3", turi: "krossover", yili: "2024", urin: "5", motor: "1.5T", trans: "6DCT", ot: "180", tezlik: "180 km/s", sarf: "<6.9 L", bak: "55 L", olcham: "4605x1890x1700", clearance: "25 cm", shina: "235/55R18", drive: "FWD", tormoz: "disk", u_vazn: "2015 kg", y_vazn: "1590 kg" },
-    "299000000": { name: "JAC JS8 Pro", sub: {uz:"7 o'rinli oilaviy premium krossover", ru:"7-местный кроссовер", en:"7-seat SUV"}, img: "https://lh3.googleusercontent.com/d/1JWYIXDTxmxnqdqVm7xzZZTSxGgHVHQm4", turi: "krossover", yili: "2026", urin: "7", motor: "1.5T", trans: "7DCT", ot: "180", tezlik: "170 km/s", sarf: "<7.5 L", bak: "58 L", olcham: "4825x1870x1758", clearance: "16 cm", shina: "265/50R19", drive: "FWD", tormoz: "disk", u_vazn: "2225 kg", y_vazn: "1675 kg" },
-    "423500000": { name: "JAC RF8", sub: {uz:"Kelajak texnologiyasi va komfort", ru:"Премиум MPV", en:"Premium MPV"}, img: "https://lh3.googleusercontent.com/d/1wcmluGZZOdtowL-EXoal9PWDOwUHafyn", turi: "miniven", yili: "2026", urin: "7", motor: "2.0T", trans: "8GDI", ot: "253", tezlik: "210 km/s", sarf: "<8.9 L", bak: "65 L", olcham: "5215x1895x1830", clearance: "16 cm", shina: "225/55R18", drive: "FWD", tormoz: "disk", u_vazn: "2110 kg", y_vazn: "2675 kg" },
-    "314600000": { name: "JAC T8", sub: {uz:"Har qanday yo'lni tanlamas pikap", ru:"Пикап 4WD", en:"4WD Pickup"}, img: "https://lh3.googleusercontent.com/d/1FCJsFDyFKe4jo5eywXowGkN1AOyGFk0D", turi: "pikap", yili: "2026", urin: "5", motor: "2.0T", trans: "6MT", ot: "191", tezlik: "120 km/s", sarf: "<8.5 L", bak: "80 L", olcham: "5990x2098x2645", clearance: "16 cm", shina: "195/75R16", drive: "4WD", tormoz: "disk_b", u_vazn: "4000 kg", y_vazn: "2800 kg" },
-    "399300000": { name: "JAC T9", sub: {uz:"Kuchli va zamonaviy off-road pikapi", ru:"Мощный пикап", en:"Powerful pickup"}, img: "https://lh3.googleusercontent.com/d/18pJoJ3U_DeZmSWgfEND_XnIeuSCSjErV", turi: "pikap", yili: "2026", urin: "5", motor: "2.0T", trans: "8AT", ot: "231", tezlik: "150 km/s", sarf: "<10 L", bak: "76 L", olcham: "5330x1965x1920", clearance: "21 cm", shina: "265/60R18", drive: "4WD", tormoz: "disk", u_vazn: "3055 kg", y_vazn: "2055 kg" },
-    "227360000": { name: "JAC X200 (shassi)", sub: {uz:"Ixcham shassili mini-yuk tashuvchi", ru:"Шасси мини-грузовик", en:"Chassis mini truck"}, img: "https://lh3.googleusercontent.com/d/1E2z6LuiK8euBSmfiW_W7fEEv-pbjASEj", turi: "mini_y", yili: "2025", urin: "2", motor: "2.0", trans: "5MT", ot: "147", tezlik: "110 km/s", sarf: "<8.2 L", bak: "65 L", olcham: "5190×1750×1945", clearance: "18 cm", shina: "195/70R15C", drive: "RWD", tormoz: "disk_b", u_vazn: "3490 kg", y_vazn: "1645 kg", variant: "shassi" },
-    "231840000": { name: "JAC X200 (bort)", sub: {uz:"Ixcham bortli mini-yuk tashuvchi", ru:"Бортовой грузовик", en:"Board truck"}, img: "https://lh3.googleusercontent.com/d/1PciHiCvbPtTbnPi8JKgdWRcAeTADRUx8", turi: "mini_y", yili: "2025", urin: "2", motor: "2.0", trans: "5MT", ot: "147", tezlik: "110 km/s", sarf: "<8.2 L", bak: "65 L", olcham: "5190×1750×1945", clearance: "18 cm", shina: "195/70R15C", drive: "RWD", tormoz: "disk_b", u_vazn: "3490 kg", y_vazn: "1645 kg", variant: "bort" },
-    "238560000": { name: "JAC X200 (tent)", sub: {uz:"Tentli mini-yuk tashuvchi", ru:"Тентовый грузовик", en:"Tent truck"}, img: "https://lh3.googleusercontent.com/d/1owTI2wCRa8EMYYF8E8UToWFKPuAb0UvB", turi: "mini_y", yili: "2025", urin: "2", motor: "2.0", trans: "5MT", ot: "147", tezlik: "110 km/s", sarf: "<8.2 L", bak: "65 L", olcham: "5190×1750×2640", clearance: "18 cm", shina: "195/70R15C", drive: "RWD", tormoz: "disk_b", u_vazn: "3500 kg", y_vazn: "1775 kg", variant: "tent" },
-    "258720000": { name: "JAC X200 (prom.)", sub: {uz:"Izotermik mini-yuk tashuvchi", ru:"Пром. грузовик", en:"Prom truck"}, img: "https://lh3.googleusercontent.com/d/1hMeBuE13-upTTIp4A_ynfrUD0GaMEEgC", turi: "mini_y", yili: "2025", urin: "2", motor: "2.0", trans: "5MT", ot: "147", tezlik: "110 km/s", sarf: "<8.2 L", bak: "65 L", olcham: "5190×1760×2610", clearance: "18 cm", shina: "195/70R15C", drive: "RWD", tormoz: "disk_b", u_vazn: "3500 kg", y_vazn: "1780 kg", variant: "prom" }
-};
+        const carData = {
+            "199080000": { name: "JAC M3 VAN", sub: {uz:"Ishonchli va tejamkor furgon", ru:"Надежный фургон", en:"Reliable van"}, img: "https://lh3.googleusercontent.com/d/10Z2luzS1Ov_1UMGghXESVxfon_FH0a4K", turi: "furgon", yili: "2026", urin: "2", motor: "1.8", trans: "5MT", ot: "134", tezlik: "<155 km/s", sarf: "<8.5 L", bak: "55 L", olcham: "5115x1765x1900", clearance: "16 cm", shina: "195/70R15", drive: "RWD", tormoz: "disk_b", u_vazn: "2600 kg", y_vazn: "1600 kg" },
+            "215460000": { name: "JAC M3 LUXE", sub: {uz:"Keng va qulay biznes transporti", ru:"Бизнес-минивэн", en:"Business MPV"}, img: "https://lh3.googleusercontent.com/d/1A7ldKXl_S2dBGyfxLGsO-laEqi6QdrYq", turi: "miniven", yili: "2026", urin: "9", motor: "1.8", trans: "5MT", ot: "134", tezlik: "<155 km/s", sarf: "<8.5 L", bak: "55 L", olcham: "5115x1765x1900", clearance: "16 cm", shina: "205/65R15", drive: "RWD", tormoz: "disk_b", u_vazn: "2378 kg", y_vazn: "1640 kg" },
+            "243180000": { name: "JAC M4 LUXE", sub: {uz:"Ishonchli hamkor, qulay safar", ru:"Комфортный минивэн", en:"Comfort MPV"}, img: "https://lh3.googleusercontent.com/d/1zIG91qhOYpi1It64aEXL4MCyngerddBK", turi: "miniven", yili: "2026", urin: "9", motor: "2.0", trans: "5MT", ot: "144", tezlik: "<160 km/s", sarf: "<9.5 L", bak: "80 L", olcham: "5200x1890x1970", clearance: "16 cm", shina: "215/65R16", drive: "RWD", tormoz: "disk", u_vazn: "2815 kg", y_vazn: "1930 kg" },
+            "365400000": { name: "JAC SUNRAY VAN", sub: {uz:"Keng hajmli yuk tashuvchi furgon", ru:"Грузовой фургон", en:"Cargo van"}, img: "https://lh3.googleusercontent.com/d/1MXmwCnj-8rV1Lt64j3f9dIm2DOMid0W-", turi: "furgon", yili: "2026", urin: "3", motor: "2.0", trans: "6MT", ot: "191", tezlik: "<120 km/s", sarf: "<8.5 L", bak: "80 L", olcham: "5990x2098x2645", clearance: "16 cm", shina: "195/75R16", drive: "RWD", tormoz: "disk_b", u_vazn: "3490 kg", y_vazn: "2655 kg" },
+            "396900000": { name: "JAC SUNRAY LUXE", sub: {uz:"Zamonaviy va sig'imli mikroavtobus", ru:"Микроавтобус", en:"Minibus"}, img: "https://lh3.googleusercontent.com/d/1AwSvAzRlSzwiUYl0K2IaShJMuOW3CWlN", turi: "mikro", yili: "2026", urin: "16", motor: "2.0", trans: "6MT", ot: "190", tezlik: "<120 km/s", sarf: "<8.5 L", bak: "80 L", olcham: "5990x2098x2645", clearance: "16 cm", shina: "215/75R16", drive: "RWD", tormoz: "disk", u_vazn: "4000 kg", y_vazn: "2800 kg" },
+            "225000000": { name: "JAC J7 Luxury", sub: {uz:"Elegant dizayn va komfort", ru:"Элегантный седан", en:"Elegant sedan"}, img: "https://lh3.googleusercontent.com/d/1efOKUp4kykvtU67cosuokDmcNr-BlQ-z", turi: "sedan", yili: "2024", urin: "5", motor: "1.5T", trans: "6CVT", ot: "150", tezlik: "170 km/s", sarf: "<6.5 L", bak: "55 L", olcham: "4772x1820x1492", clearance: "12 cm", shina: "215/50R17", drive: "FWD", tormoz: "disk", u_vazn: "1865 kg", y_vazn: "1440 kg" },
+            "280000000": { name: "JAC JS6 Luxury", sub: {uz:"Innovatsion texnologiyali krossover", ru:"Hi-tech кроссовер", en:"Hi-tech crossover"}, img: "https://lh3.googleusercontent.com/d/1KJgGZDRCmUiP1joAhXOAl-Ej6cyBNHH3", turi: "krossover", yili: "2024", urin: "5", motor: "1.5T", trans: "6DCT", ot: "180", tezlik: "180 km/s", sarf: "<6.9 L", bak: "55 L", olcham: "4605x1890x1700", clearance: "25 cm", shina: "235/55R18", drive: "FWD", tormoz: "disk", u_vazn: "2015 kg", y_vazn: "1590 kg" },
+            "299000000": { name: "JAC JS8 Pro", sub: {uz:"7 o'rinli oilaviy premium krossover", ru:"7-местный кроссовер", en:"7-seat SUV"}, img: "https://lh3.googleusercontent.com/d/1JWYIXDTxmxnqdqVm7xzZZTSxGgHVHQm4", turi: "krossover", yili: "2026", urin: "7", motor: "1.5T", trans: "7DCT", ot: "180", tezlik: "170 km/s", sarf: "<7.5 L", bak: "58 L", olcham: "4825x1870x1758", clearance: "16 cm", shina: "265/50R19", drive: "FWD", tormoz: "disk", u_vazn: "2225 kg", y_vazn: "1675 kg" },
+            "423500000": { name: "JAC RF8", sub: {uz:"Kelajak texnologiyasi va komfort", ru:"Премиум MPV", en:"Premium MPV"}, img: "https://lh3.googleusercontent.com/d/1wcmluGZZOdtowL-EXoal9PWDOwUHafyn", turi: "miniven", yili: "2026", urin: "7", motor: "2.0T", trans: "8GDI", ot: "253", tezlik: "210 km/s", sarf: "<8.9 L", bak: "65 L", olcham: "5215x1895x1830", clearance: "16 cm", shina: "225/55R18", drive: "FWD", tormoz: "disk", u_vazn: "2110 kg", y_vazn: "2675 kg" },
+            "314600000": { name: "JAC T8", sub: {uz:"Har qanday yo'lni tanlamas pikap", ru:"Пикап 4WD", en:"4WD Pickup"}, img: "https://lh3.googleusercontent.com/d/1FCJsFDyFKe4jo5eywXowGkN1AOyGFk0D", turi: "pikap", yili: "2026", urin: "5", motor: "2.0T", trans: "6MT", ot: "191", tezlik: "120 km/s", sarf: "<8.5 L", bak: "80 L", olcham: "5990x2098x2645", clearance: "16 cm", shina: "195/75R16", drive: "4WD", tormoz: "disk_b", u_vazn: "4000 kg", y_vazn: "2800 kg" },
+            "399300000": { name: "JAC T9", sub: {uz:"Kuchli va zamonaviy off-road pikapi", ru:"Мощный пикап", en:"Powerful pickup"}, img: "https://lh3.googleusercontent.com/d/18pJoJ3U_DeZmSWgfEND_XnIeuSCSjErV", turi: "pikap", yili: "2026", urin: "5", motor: "2.0T", trans: "8AT", ot: "231", tezlik: "150 km/s", sarf: "<10 L", bak: "76 L", olcham: "5330x1965x1920", clearance: "21 cm", shina: "265/60R18", drive: "4WD", tormoz: "disk", u_vazn: "3055 kg", y_vazn: "2055 kg" },
+            "227360000": { name: "JAC X200 (shassi)", sub: {uz:"Ixcham shassili mini-yuk tashuvchi", ru:"Шасси мини-грузовик", en:"Chassis mini truck"}, img: "https://lh3.googleusercontent.com/d/1E2z6LuiK8euBSmfiW_W7fEEv-pbjASEj", turi: "mini_y", yili: "2025", urin: "2", motor: "2.0", trans: "5MT", ot: "147", tezlik: "110 km/s", sarf: "<8.2 L", bak: "65 L", olcham: "5190×1750×1945", clearance: "18 cm", shina: "195/70R15C", drive: "RWD", tormoz: "disk_b", u_vazn: "3490 kg", y_vazn: "1645 kg", variant: "shassi" },
+            "231840000": { name: "JAC X200 (bort)", sub: {uz:"Ixcham bortli mini-yuk tashuvchi", ru:"Бортовой грузовик", en:"Board truck"}, img: "https://lh3.googleusercontent.com/d/1PciHiCvbPtTbnPi8JKgdWRcAeTADRUx8", turi: "mini_y", yili: "2025", urin: "2", motor: "2.0", trans: "5MT", ot: "147", tezlik: "110 km/s", sarf: "<8.2 L", bak: "65 L", olcham: "5190×1750×1945", clearance: "18 cm", shina: "195/70R15C", drive: "RWD", tormoz: "disk_b", u_vazn: "3490 kg", y_vazn: "1645 kg", variant: "bort" },
+            "238560000": { name: "JAC X200 (tent)", sub: {uz:"Tentli mini-yuk tashuvchi", ru:"Тентовый грузовик", en:"Tent truck"}, img: "https://lh3.googleusercontent.com/d/1owTI2wCRa8EMYYF8E8UToWFKPuAb0UvB", turi: "mini_y", yili: "2025", urin: "2", motor: "2.0", trans: "5MT", ot: "147", tezlik: "110 km/s", sarf: "<8.2 L", bak: "65 L", olcham: "5190×1750×2640", clearance: "18 cm", shina: "195/70R15C", drive: "RWD", tormoz: "disk_b", u_vazn: "3500 kg", y_vazn: "1775 kg", variant: "tent" },
+            "258720000": { name: "JAC X200 (prom.)", sub: {uz:"Izotermik mini-yuk tashuvchi", ru:"Пром. грузовик", en:"Prom truck"}, img: "https://lh3.googleusercontent.com/d/1hMeBuE13-upTTIp4A_ynfrUD0GaMEEgC", turi: "mini_y", yili: "2025", urin: "2", motor: "2.0", trans: "5MT", ot: "147", tezlik: "110 km/s", sarf: "<8.2 L", bak: "65 L", olcham: "5190×1760×2610", clearance: "18 cm", shina: "195/70R15C", drive: "RWD", tormoz: "disk_b", u_vazn: "3500 kg", y_vazn: "1780 kg", variant: "prom" }
+        };
 
         function updateClock() {
             const now = new Date();
@@ -596,7 +530,9 @@ const carData = {
             
             let displayName = car.name; 
             if(car.variant) displayName = `${car.name.split(' (')[0]} (${v[car.variant]})`;
-            document.getElementById('carName').innerText = displayName;
+            
+            const priceWithCurrency = formatNumber(parseInt(id)) + ' UZS';
+            document.getElementById('carName').innerHTML = `${displayName} <span style="font-size: 0.92em; color: #00608b; font-weight: 900;">- ${priceWithCurrency}</span>`;
 
             let warranty = t.warranty5;
             if (car.name.includes("SUNRAY") || car.name.includes("X200")) warranty = t.warranty3;
